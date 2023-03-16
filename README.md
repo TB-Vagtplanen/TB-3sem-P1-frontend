@@ -22,3 +22,7 @@ We have chosen the branching strategy:
 - Story/task branching strategy
 
 We are doing this because we want to split the different stories features of our system. This will make sure everyone gets to play with the backend & frontend.
+
+
+### Azure
+We have decided for this project to use Mark's Azure to setup resources 
