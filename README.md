@@ -20,4 +20,5 @@ If a member from the group does not announce why he is absent, we will will try 
 ### Branching strategy
 We have chosen the branching strategy:
 - Story/task branching strategy
+
 We are doing this because we want to split the different stories features of our system. This will make sure everyone gets to play with the backend & frontend.
