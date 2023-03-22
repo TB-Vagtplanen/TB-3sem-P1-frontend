@@ -29,9 +29,9 @@ import {
         //For very simple "templates", you can just insert your HTML directly like below
         "/": () => document.getElementById("content").innerHTML = `
           <h2>Home</h2>
-          <img style="width:50%;max-width:600px;margin-top:1em;" src="./images/cars.png">
-          <p style='margin-top:1em;font-size: 1.5em;color:darkgray;'>
-            Car's 'R' Us - Created, as a help to make GREAT fullstack developers <span style='font-size:2em;'>&#128516;</span>
+          <img style="width:20%;max-width:600px;margin-top:1em;margin-left: 550px;" src="./images/logo.png">
+          <p style='margin-top:1em;font-size: 1em;color:darkgray;'>
+            Vagtplanen is a software which helps you get a nice view over all your shifts.<span style='font-size:2em;'>&#128516;</span>
           </p>
        `,
         "/loginPage": () => {
