@@ -43,6 +43,7 @@ import {
         },
         "/logout": () => {
           logout()
+          renderTemplate(templateLogin, "content")
         },
         "/adminCalendar": () => {
           if (checkAdmin()){

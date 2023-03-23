@@ -10,7 +10,9 @@ export function initLogin() {
 export function logout(){
   document.getElementById("login-id").style.display="block"
   document.getElementById("logout-id").style.display="none"
+  document.getElementById("adminCalendar-id").style.display="none"
   localStorage.clear()
+
 
 }
 
