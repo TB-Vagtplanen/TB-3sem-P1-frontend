@@ -1,4 +1,4 @@
-export function loadDom() {
+export function loadAdminDom() {
 
 /*   var appointments = document.querySelectorAll(".appointment");
   for (var i = 0; i < appointments.length; i++) {

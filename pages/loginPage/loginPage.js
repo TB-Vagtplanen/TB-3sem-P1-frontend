@@ -11,6 +11,7 @@ export function logout(){
   document.getElementById("login-id").style.display="block"
   document.getElementById("logout-id").style.display="none"
   document.getElementById("adminCalendar-id").style.display="none"
+  document.getElementById("userCalendar-id").style.display="none"
   localStorage.clear()
 
 
@@ -49,7 +50,7 @@ async function login(evt) {
     if (localStorage.getItem("roles", response.roles)=="ADMIN") {
       document.getElementById("adminCalendar-id").style.display="block"
     } else {
-     // document.getElementById("userCalender-id").style.display="block"
+     document.getElementById("userCalendar-id").style.display="block"
     }
 
     window.router.navigate("")

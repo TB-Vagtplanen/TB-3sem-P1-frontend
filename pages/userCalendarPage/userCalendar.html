@@ -1,0 +1,39 @@
+<template>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 30px;
+            border: 1px solid black;
+        }
+
+        th {
+            background-color: #eee;
+        }
+
+        .calendar {
+            margin-left: 50px;
+            height: 50em;
+            width: 80em ;
+            overflow-y: scroll;
+        }
+    </style>
+    <div class="calendar">
+        <table id="myTable">
+            <thead>
+                <tr>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                    <th>Sunday</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</template>

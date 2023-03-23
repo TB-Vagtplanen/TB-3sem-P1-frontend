@@ -5,13 +5,15 @@ import {
   } from "./utils.js"
   
   import { initLogin,logout, checkAdmin } from "./pages/loginPage/loginPage.js";
-  import { loadDom } from "./pages/calendarPage/adminCalendar.js"
+  import { loadAdminDom } from "./pages/calendarPage/adminCalendar.js"
+  import { loadUserDom } from "./pages/userCalendarPage/userCalendar.js"
 
   console.log("testfhdherh")
   window.addEventListener("load", async () => {
   
     const templateLogin = await loadTemplate("./pages/loginPage/loginPage.html")
     const templateAdminCalendar = await loadTemplate("./pages/calendarPage/adminCalendar.html")
+    const templateUserCalendar = await loadTemplate("./pages/userCalendarPage/userCalendar.html")
 
   
     adjustForMissingHash()
@@ -48,8 +50,15 @@ import {
         "/adminCalendar": () => {
           if (checkAdmin()){
           renderTemplate(templateAdminCalendar, "content")
-          loadDom()
+          loadAdminDom()
+        } else{
+          renderTemplate(templateUserCalendar, "content")
+          loadUserDom()
         }
+        },
+        "/userCalendar": () => {
+          renderTemplate(templateUserCalendar, "content")
+          loadUserDom()
         }
       })
       .notFound(() => {
