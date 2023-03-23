@@ -4,12 +4,14 @@ import {
     setActiveLink, adjustForMissingHash, renderTemplate, loadTemplate
   } from "./utils.js"
   
-  import { initLogin,logout } from "./pages/loginPage/loginPage.js"
+  import { initLogin,logout } from "./pages/loginPage/loginPage.js";
+  import { initadminLogin, loadDom } from "./pages/calendarPage/adminCalendar.js"
 
   console.log("testfhdherh")
   window.addEventListener("load", async () => {
   
     const templateLogin = await loadTemplate("./pages/loginPage/loginPage.html")
+    const templateAdminCalendar = await loadTemplate("./pages/calendarPage/adminCalendar.html")
 
   
     adjustForMissingHash()
@@ -38,9 +40,15 @@ import {
             console.log("The function was called.")
           renderTemplate(templateLogin, "content")
           initLogin()
+          initadminLogin()
         },
         "/logout": () => {
           logout()
+        },
+        "/adminCalendar": () => {
+          renderTemplate(templateAdminCalendar, "content")
+          loadDom()
+
         }
       })
       .notFound(() => {
