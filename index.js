@@ -4,8 +4,8 @@ import {
     setActiveLink, adjustForMissingHash, renderTemplate, loadTemplate
   } from "./utils.js"
   
-  import { initLogin,logout } from "./pages/loginPage/loginPage.js";
-  import { initadminLogin, loadDom } from "./pages/calendarPage/adminCalendar.js"
+  import { initLogin,logout, checkAdmin } from "./pages/loginPage/loginPage.js";
+  import { loadDom } from "./pages/calendarPage/adminCalendar.js"
 
   console.log("testfhdherh")
   window.addEventListener("load", async () => {
@@ -40,15 +40,15 @@ import {
             console.log("The function was called.")
           renderTemplate(templateLogin, "content")
           initLogin()
-          initadminLogin()
         },
         "/logout": () => {
           logout()
         },
         "/adminCalendar": () => {
+          if (checkAdmin()){
           renderTemplate(templateAdminCalendar, "content")
           loadDom()
-
+        }
         }
       })
       .notFound(() => {

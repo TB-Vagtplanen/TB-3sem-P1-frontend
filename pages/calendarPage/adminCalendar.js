@@ -1,10 +1,3 @@
-export function initadminLogin() {
-  document.getElementById("adminCalendar-id").style.display = "block";
-
-  console.log("hi");
- 
-}
-
 export function loadDom() {
 
 /*   var appointments = document.querySelectorAll(".appointment");
