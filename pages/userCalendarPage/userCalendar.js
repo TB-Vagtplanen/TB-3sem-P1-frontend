@@ -1,4 +1,5 @@
 export function loadUserDom() {
+    
 
     /*   var appointments = document.querySelectorAll(".appointment");
       for (var i = 0; i < appointments.length; i++) {
