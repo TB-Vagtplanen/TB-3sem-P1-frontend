@@ -1,9 +1,11 @@
 import { LOCAL_API_URL, API_URL } from "../../../settings.js"
 import { handleHttpErrors } from "../../../utils.js"
 
+let phones = {};
 
 export function initAddUser() {
     document.getElementById("btn-addUser").onclick = () => addUser(getUserDetails())
+    document.getElementById("btn-add-phone").onclick = addPhone
 }
 
 
@@ -59,12 +61,40 @@ function getUserDetails() {
     user.email = document.getElementById("email").value
     user.username = makeUsername()
     user.password = makePassword()
+
+    const phoneNumber = document.getElementById("phoneNumber").value
+    const phoneName = document.getElementById("phoneName").value
+
+    user.phones = phones
     user.worker = true;
     //user phones
     return user
 }
 
 
+
+function addPhone() {
+    const phoneList = document.getElementById("phoneList");
+    const phoneName = document.getElementById("phoneName").value;
+    const phoneNumber = document.getElementById("phoneNumber").value;
+  
+    if (phoneName && phoneNumber) {
+      phones[phoneName] = phoneNumber
+  
+      // Create a new phone entry element
+      const phoneRow = document.createElement("tr");
+      phoneRow.innerHTML = `
+        <td>${phoneName}</td>
+        <td>${phoneNumber}</td>
+      `;
+      phoneList.appendChild(phoneRow);
+
+      // Clear the input fields
+      document.getElementById("phoneName").value = ""
+      document.getElementById("phoneNumber").value = ""
+    }
+    
+}
 
 
 
