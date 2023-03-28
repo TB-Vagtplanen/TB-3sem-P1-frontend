@@ -25,8 +25,10 @@ export function checkAdmin(){
 async function login(evt) {
   document.getElementById("error").innerText = ""
 
-  const username = document.getElementById("username").value
-  const password = document.getElementById("password").value
+  //Added DOMPurify.sanitize to add security. With this we prevent cross-site scripting (XSS) attacks and other types of malicious code injection.
+  const username = DOMPurify.sanitize(document.getElementById("username").value)
+  const password = DOMPurify.sanitize(document.getElementById("password").value)
+
 
   //const userDto = {username:username,password:password}
   const userDto = { username, password }
