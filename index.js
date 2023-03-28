@@ -5,11 +5,18 @@ import {
   } from "./utils.js"
   
   import { initLogin,logout } from "./pages/loginPage/loginPage.js"
+  import { initAddUser } from "./pages/userAdmin/addUser/addUser.js"
+  import { initEditUser } from "./pages/userAdmin/editUser/editUser.js"
+  import { initDeleteUser } from "./pages/userAdmin/deleteUser/deleteUser.js"
+
 
   console.log("testfhdherh")
   window.addEventListener("load", async () => {
   
     const templateLogin = await loadTemplate("./pages/loginPage/loginPage.html")
+    const templateAddUser = await loadTemplate("./pages/userAdmin/addUser/addUser.html")
+    const templateEditUser = await loadTemplate("./pages/userAdmin/editUser/editUser.html")
+    const templateDeleteUser = await loadTemplate("./pages/userAdmin/deleteUser/deleteUser.html")
 
   
     adjustForMissingHash()
@@ -41,7 +48,22 @@ import {
         },
         "/logout": () => {
           logout()
+        },
+        "/userAdmin/addUser": () => {
+          renderTemplate(templateAddUser, "content")
+          initAddUser()
+        },
+        "/userAdmin/editUser": () => {
+          renderTemplate(templateEditUser, "content")
+          initEditUser()
+          
+        },
+        "/userAdmin/deleteUser": () => {
+          renderTemplate(templateDeleteUser, "content")
+          initDeleteUser()
+
         }
+        
       })
       .notFound(() => {
         renderTemplate(templateNotFound, "content")
@@ -49,6 +71,11 @@ import {
       .resolve()
   });
   
+
+    
+  export function checkRole(role) {
+    //look at storage roles, return boolean check. If true, show content, if not, dont
+  }
   
   window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
     alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber
