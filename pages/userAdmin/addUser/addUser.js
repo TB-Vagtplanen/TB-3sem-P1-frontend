@@ -1,25 +1,9 @@
 import { LOCAL_API_URL, API_URL } from "../../../settings.js"
 import { handleHttpErrors } from "../../../utils.js"
 
-let firstName;
-let lastName;
-let email;
-
-let street;
-let city;
-let zip;
 
 export function initAddUser() {
     document.getElementById("btn-addUser").onclick = () => addUser(getUserDetails())
-
-    document.getElementById("firstName").innerText = firstName
-    document.getElementById("lastName").innerText = lastName
-    document.getElementById("email").innerText = email
-    
-    document.getElementById("city").innerText = city
-    document.getElementById("zip").innerText = zip
-    document.getElementById("street").innerText = street
-
 }
 
 
@@ -36,7 +20,7 @@ function makeUsername() {
 
 function makePassword() {
     // long random text
-    const psd = (Math.floor(Math.random()*100000000))+100000000
+    const psd = ( Math.floor( Math.random() * 100000000 ) ) + 100000000
     return psd
 }
 
