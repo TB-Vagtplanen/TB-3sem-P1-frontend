@@ -8,6 +8,7 @@ import {
   import { initAddUser } from "./pages/userAdmin/addUser/addUser.js"
   import { initEditUser } from "./pages/userAdmin/editUser/editUser.js"
   import { initDeleteUser } from "./pages/userAdmin/deleteUser/deleteUser.js"
+  import { initUsers } from "./pages/userAdmin/showUsers/showUsers.js"
 
 
   console.log("testfhdherh")
@@ -17,6 +18,7 @@ import {
     const templateAddUser = await loadTemplate("./pages/userAdmin/addUser/addUser.html")
     const templateEditUser = await loadTemplate("./pages/userAdmin/editUser/editUser.html")
     const templateDeleteUser = await loadTemplate("./pages/userAdmin/deleteUser/deleteUser.html")
+    const templateShowUsers = await loadTemplate("./pages/userAdmin/showUsers/showUsers.html")
 
   
     adjustForMissingHash()
@@ -24,7 +26,8 @@ import {
     const router = new Navigo("/", { hash: true });
     //Not especially nice, BUT MEANT to simplify things. Make the router global so it can be accessed from all js-files
     window.router = router
-  
+    
+
     router
       .hooks({
         before(done, match) {
@@ -45,13 +48,17 @@ import {
         "/logout": () => {
           logout()
         },
+        "/userAdmin/showUsers": () => {
+          renderTemplate(templateShowUsers, "content")
+          initUsers()
+        },
         "/userAdmin/addUser": () => {
           renderTemplate(templateAddUser, "content")
           initAddUser()
         },
-        "/userAdmin/editUser": () => {
+        "/userAdmin/editUser": (match) => {
           renderTemplate(templateEditUser, "content")
-          initEditUser()
+          initEditUser(match)
           
         },
         "/userAdmin/deleteUser": () => {

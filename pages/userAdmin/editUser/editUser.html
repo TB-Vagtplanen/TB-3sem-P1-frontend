@@ -1,3 +1,53 @@
 <template>
-    <h4>edit</h4>
+    <div style="display: flex; flex-direction: column; justify-content:center; width:fit-content;">
+        <div style="display: flex;">
+            <label for="username">Username</label>
+            <input id="username">
+            <button id="btn-find-user" style="width: fit-content;"> Find user </button>
+        </div>
+        <div style="display: flex;">
+            <label for="firstName">First Name</label>
+            <input id="firstName">
+        </div>
+        <div>
+            <label for="lastName">Last Name</label>
+            <input id="lastName">
+        </div>
+        <div>
+            <label for="street">Street</label>
+            <input id="street">
+        </div>
+        <div>
+            <label for="zip">Zip</label>
+            <input id="zip">
+        </div>
+        <div>
+            <label for="city">City</label>
+            <input id="city">
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input id="email">
+        </div>
+        <div>
+            <div>
+                <label for="phoneName">Phone name</label>
+                <input id="phoneName">
+            </div>
+            <div>
+                <label for="phoneNumber">Phone number</label>
+                <input id="phoneNumber">
+            </div>
+            <button id="btn-add-phone">Add Phone</button>
+            <table>
+                <thead>
+                  <tr>
+                    <th>Phone Name</th>
+                    <th>Phone Number</th>
+                  </tr>
+                </thead>
+                <tbody id="phoneList">
+                </tbody>
+              </table>
+    </div>
 </template>

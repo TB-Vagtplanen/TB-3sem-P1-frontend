@@ -72,6 +72,11 @@ function getUserDetails() {
 }
 
 
+function getPhonesFromTbody() {
+    
+}
+
+
 
 function addPhone() {
     const phoneList = document.getElementById("phoneList");
