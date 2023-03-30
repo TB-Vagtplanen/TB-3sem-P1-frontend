@@ -1,0 +1,79 @@
+.error {
+    color: red;
+}
+
+input[readonly] {
+    color : grey;
+    background-color:lightgrey;  
+    width: 450px;
+}
+
+
+.editUser {
+    display: flex ;
+    flex-wrap: wrap;
+}
+
+
+.findUser {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+    width: 450px;
+
+}
+
+.findUser div {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 5px;
+    align-items: center;
+    width: 360px;
+
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.userInfo div{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+    width: 360px;
+}
+
+th {
+    padding-right: 25px;
+}
+
+.editUser label {
+    padding-right: 15px;
+
+}
+
+
+#btn-edited-user-submit {
+    margin: 15px;
+}
+
+
+
+
+.phones {
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+
+
+}
+
+.phones div {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 5px;
+    align-items: center;
+    width: 360px;
+
+}

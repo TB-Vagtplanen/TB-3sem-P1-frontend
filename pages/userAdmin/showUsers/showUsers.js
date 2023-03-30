@@ -10,8 +10,7 @@ export function initUsers() {
 export async function getAllUsers() {
   try {
     const users = await fetch(LOCAL_API_URL + "/users").then((res) =>
-      res.json().then(handleHttpErrors)
-    );
+    handleHttpErrors(res));
     showAllData(users);
   } catch (err) {
     

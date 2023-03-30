@@ -6,6 +6,8 @@ let phones = {};
 export function initAddUser() {
     document.getElementById("btn-addUser").onclick = () => addUser(getUserDetails())
     document.getElementById("btn-add-phone").onclick = addPhone
+    document.getElementById("phoneList").onclick = handlePhoneButtons
+
 }
 
 
@@ -62,18 +64,19 @@ function getUserDetails() {
     user.username = makeUsername()
     user.password = makePassword()
 
-    const phoneNumber = document.getElementById("phoneNumber").value
-    const phoneName = document.getElementById("phoneName").value
+    user.phones = {};
+    const phoneList = document.getElementById("phoneList");
+    const rows = phoneList.getElementsByTagName("tr");
+    for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        const phoneName = cells[0].textContent;
+        const phoneNumber = cells[1].textContent;
+        user.phones[phoneName] = phoneNumber;
+  }
 
-    user.phones = phones
+
     user.worker = true;
-    //user phones
     return user
-}
-
-
-function getPhonesFromTbody() {
-    
 }
 
 
@@ -88,9 +91,12 @@ function addPhone() {
   
       // Create a new phone entry element
       const phoneRow = document.createElement("tr");
+      phoneRow.setAttribute("id", "row_" + phoneName);
       phoneRow.innerHTML = `
         <td>${phoneName}</td>
         <td>${phoneNumber}</td>
+        <button id="row-btn_delete_${phoneName}" type="button"  class="btn btn-sm btn-danger">Delete</button> 
+
       `;
       phoneList.appendChild(phoneRow);
 
@@ -99,7 +105,25 @@ function addPhone() {
       document.getElementById("phoneNumber").value = ""
     }
     
+
+
+  
+
 }
 
 
+async function handlePhoneButtons(evt) {
+    const target = evt.target;
+    if (!target.id.startsWith("row-btn_")) {
+      return;
+    }
+    const parts = target.id.split("_");
+    const phoneName = parts[2];
+    const btnAction = parts[1];
+    if (btnAction === "delete") {
+      const rowid = `row_${phoneName}`;
+      const phonerow = document.getElementById(rowid);
+      phonerow.remove();
+    }
+  }
 
