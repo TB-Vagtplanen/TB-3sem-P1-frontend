@@ -1,5 +1,5 @@
 import { LOCAL_API_URL, API_URL } from "../../../settings.js"
-import { handleHttpErrors } from "../../../utils.js"
+import { handleHttpErrors, makeOptions } from "../../../utils.js"
 
 let phones = {};
 
@@ -29,24 +29,12 @@ function makePassword() {
 }
 
 async function addUser(user) {
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type' : 'application/json'
-        },
-        body: JSON.stringify(user),
-    }
+    const options = makeOptions("POST", user, true) 
     try {
-        // security - get token and put bearer header 
-
-        const data = await fetch(LOCAL_API_URL+"/users",options).then(handleHttpErrors)
-
-        // return data - display
-        // 'realistically' send email with username and password to the worker
-
-
-    } catch (error) {
-
+        await fetch(LOCAL_API_URL+"/users",options).then(handleHttpErrors)
+        window.router.navigate("userAdmin/showUsers");
+    } catch (err) {
+        document.getElementById("error").innerHTML = err
     }
 
 
@@ -61,6 +49,7 @@ function getUserDetails() {
     user.zip = document.getElementById("zip").value
     user.city = document.getElementById("city").value
     user.email = document.getElementById("email").value
+    user.role = document.getElementById("roleSelect").value
     user.username = makeUsername()
     user.password = makePassword()
 

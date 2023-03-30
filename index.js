@@ -37,26 +37,31 @@ import {
           <h2>Home</h2>
        `,
         "/loginPage": () => {
+          document.getElementById("error").innerText = ""
           renderTemplate(templateLogin, "content")
           initLogin()
-
+          
         },
         "/logout": () => {
+          document.getElementById("error").innerText = ""
           logout()
         },
         "/userAdmin/showUsers": () => {
+          document.getElementById("error").innerText = ""
           renderTemplate(templateShowUsers, "content")
           initUsers()
         },
         "/userAdmin/addUser": () => {
+          document.getElementById("error").innerText = ""
           renderTemplate(templateAddUser, "content")
           initAddUser()
         },
         "/userAdmin/editUser": (match) => {
+          document.getElementById("error").innerText = ""
           renderTemplate(templateEditUser, "content")
           initEditUser(match)
         },
-
+        
         
       })
       .notFound(() => {

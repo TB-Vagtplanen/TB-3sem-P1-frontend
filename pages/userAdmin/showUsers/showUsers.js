@@ -5,18 +5,39 @@ import { handleHttpErrors } from "../../../utils.js";
 export function initUsers() {
   document.getElementById("tbl-body").onclick = showUserDetails;
   document.getElementById("user-details-modal").onclick = handleModalExit
-  getAllUsers();
+  document.getElementById("btn-show-all-workers").onclick = getAllUsers;
+  document.getElementById("btn-show-active-workers").onclick = getAllActiveUsers;
+  getAllActiveUsers()
 }
 
 let fetchedUsers = {}
 
 export async function getAllUsers() {
+
+  const options = makeOptions("GET", "", true) 
+
   try {
-    const users = await fetch(LOCAL_API_URL + "/users").then((res) =>
+    const users = await fetch(LOCAL_API_URL + "/users", options).then((res) =>
     handleHttpErrors(res));
     showAllData(users);
     fetchedUsers = users;
   } catch (err) {
+    document.getElementById("error").innerText = err
+    
+  }
+}
+
+async function getAllActiveUsers() {
+
+  const options = makeOptions("GET", "", true) 
+
+  try {
+    const users = await fetch(LOCAL_API_URL + "/users/active", options).then((res) =>
+    handleHttpErrors(res));
+    showAllData(users);
+    fetchedUsers = users;
+  } catch (err) {
+    document.getElementById("error").innerText = err
     
   }
 }
@@ -57,16 +78,21 @@ async function showUserDetails(evt) {
     showUserModal(username)
   } else if (btnAction === "archive") {
     archiveUser(username)
+    getAllActiveUsers()
   } else if (btnAction === "edit") {
     window.router.navigate("userAdmin/editUser?username=" + username);
   }
 }
 
 
-function handleModalExit() {
-  const modal = document.getElementById("user-details-modal");
-  if( modal.style.display === "block") {
-    modal.style.display = "none";
+function handleModalExit(evt) {
+  if (evt.target.id === "user-details-modal") {
+    const modal = document.getElementById("user-details-modal");
+    if( modal.style.display === "block") {
+      modal.style.display = "none";
+    }
+  } else {
+    evt.stopPropagation()
   }
 
 
@@ -78,11 +104,8 @@ async function showUserModal (username) {
   const modal = document.getElementById("user-details-modal");
   const modalContent = modal.querySelector(".modal-content");
 
-  console.log(user)
-
   const phones = Object.entries(user.phones).map(([name, number]) => `${name}: ${number}`);
   const phoneHtml = phones.map(phone => `<p>${phone}</p>`).join('');
-  
   
   const userHtml = `
     <h2>User Details</h2>
@@ -101,13 +124,12 @@ async function showUserModal (username) {
 
 async function archiveUser(username) {
   try {
-    const options = makeOptions("PATCH", {}, false)
+    const options = makeOptions("PATCH", {}, true)
       
     const users = await fetch(LOCAL_API_URL + "/users/enabled/" + username, options).then((res) =>
     handleHttpErrors(res));
-    // show a change happened
   } catch (err) {
-    
+
   }
 }
 

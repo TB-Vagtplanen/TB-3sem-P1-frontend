@@ -49,7 +49,8 @@ async function renderUser(username) {
 
 
   try {
-    const user = await fetch(LOCAL_API_URL + "/users/" + username).then((res) =>
+    const options = makeOptions("GET", "", true)
+    const user = await fetch(LOCAL_API_URL + "/users/" + username, options).then((res) =>
       handleHttpErrors(res)
     );
 
@@ -148,10 +149,11 @@ function gatherUserData() {
 }
 
 async function submitEditedUser() {
-  const options = makeOptions("PUT", gatherUserData(), false);
+  const options = makeOptions("PUT", gatherUserData(), true);
 
   try {
     //maybe use modal as a response
+    
     const user = await fetch(LOCAL_API_URL + "/users", options).then((res) =>
       handleHttpErrors(res)
     );
