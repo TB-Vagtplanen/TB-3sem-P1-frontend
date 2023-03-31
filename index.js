@@ -6,7 +6,7 @@ import {
   
   import { initLogin,logout, checkAdmin } from "./pages/loginPage/loginPage.js";
   //import { loadAdminDom } from "./pages/calendarPage/adminCalendar.js"
-  import { loadUserDom } from "./pages/userCalendarPage/userCalendar.js"
+  import { loadUserDOM } from "./pages/userCalendarPage/userCalendar.js"
   import { initiateAdminCalendar } from "./pages/calendarPage/adminCalendar.js"
 
   console.log("testfhdherh")
@@ -55,12 +55,12 @@ import {
           //loadAdminDom()
         } else{
           renderTemplate(templateUserCalendar, "content")
-          loadUserDom()
+          loadUserDOM()
         }
         },
         "/userCalendar": () => {
           renderTemplate(templateUserCalendar, "content")
-          loadUserDom()
+          loadUserDOM()
         }
       })
       .notFound(() => {
