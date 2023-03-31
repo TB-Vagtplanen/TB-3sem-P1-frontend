@@ -4,6 +4,7 @@ import {handleHttpErrors} from "../../utils.js"
 const URL = API_URL + "/auth/login"
 
 export function initLogin() {
+  console.log("attempting Logging in")
   document.getElementById("login-btn").onclick = login
 }
 

@@ -5,8 +5,9 @@ import {
   } from "./utils.js"
   
   import { initLogin,logout, checkAdmin } from "./pages/loginPage/loginPage.js";
-  import { loadAdminDom } from "./pages/calendarPage/adminCalendar.js"
+  //import { loadAdminDom } from "./pages/calendarPage/adminCalendar.js"
   import { loadUserDom } from "./pages/userCalendarPage/userCalendar.js"
+  import { initiateAdminCalendar } from "./pages/calendarPage/adminCalendar.js"
 
   console.log("testfhdherh")
   window.addEventListener("load", async () => {
@@ -50,7 +51,8 @@ import {
         "/adminCalendar": () => {
           if (checkAdmin()){
           renderTemplate(templateAdminCalendar, "content")
-          loadAdminDom()
+          initiateAdminCalendar();
+          //loadAdminDom()
         } else{
           renderTemplate(templateUserCalendar, "content")
           loadUserDom()
