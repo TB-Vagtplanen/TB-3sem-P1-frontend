@@ -33,11 +33,14 @@ import {
         }
       })
       .on({
-        "/": () => document.getElementById("content").innerHTML = `
-          <h2>Home</h2>
-       `,
-        "/loginPage": () => {
+        "/": () => {
           document.getElementById("error").innerText = ""
+          document.getElementById("content").innerHTML = `
+          <h2>Home</h2>
+          `
+        },
+          "/loginPage": () => {
+            document.getElementById("error").innerText = ""
           renderTemplate(templateLogin, "content")
           initLogin()
           

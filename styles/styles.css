@@ -49,8 +49,16 @@ th {
   padding-right: 25px;
 }
 
-label {
+.editUser label {
   padding-right: 15px;
+}
+
+.findUser label {
+  padding-right: 15px;
+}
+
+.userInfo label {
+    padding-right: 15px;
 }
 
 #btn-edited-user-submit {
@@ -70,6 +78,10 @@ label {
   padding-top: 5px;
   align-items: center;
   width: 360px;
+}
+
+.phones label {
+    padding-right: 15px;
 }
 
 .modal {
@@ -99,4 +111,8 @@ label {
 
 .btn-show-user {
   margin-left: 25px;
+}
+
+#count{
+    padding-left: 10px;
 }

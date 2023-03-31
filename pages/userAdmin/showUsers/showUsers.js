@@ -21,6 +21,7 @@ export async function getAllUsers() {
     handleHttpErrors(res));
     showAllData(users);
     fetchedUsers = users;
+    document.getElementById("count").innerText = "(" + users.length + ")"
   } catch (err) {
     document.getElementById("error").innerText = err
     
@@ -36,6 +37,7 @@ async function getAllActiveUsers() {
     handleHttpErrors(res));
     showAllData(users);
     fetchedUsers = users;
+    document.getElementById("count").innerText = "(" + users.length + ")"
   } catch (err) {
     document.getElementById("error").innerText = err
     
@@ -126,9 +128,10 @@ async function archiveUser(username) {
   try {
     const options = makeOptions("PATCH", {}, true)
       
-    const users = await fetch(LOCAL_API_URL + "/users/enabled/" + username, options).then((res) =>
+    await fetch(LOCAL_API_URL + "/users/enabled/" + username, options).then((res) =>
     handleHttpErrors(res));
   } catch (err) {
+    document.getElementById("error").innerHTML = err
 
   }
 }
