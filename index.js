@@ -5,19 +5,26 @@ import {
   } from "./utils.js"
   
   import { initLogin,logout } from "./pages/loginPage/loginPage.js"
+  import { initAddUser } from "./pages/userAdmin/addUser/addUser.js"
+  import { initEditUser } from "./pages/userAdmin/editUser/editUser.js"
+  import { initUsers } from "./pages/userAdmin/showUsers/showUsers.js"
 
-  console.log("testfhdherh")
+
   window.addEventListener("load", async () => {
   
     const templateLogin = await loadTemplate("./pages/loginPage/loginPage.html")
+    const templateAddUser = await loadTemplate("./pages/userAdmin/addUser/addUser.html")
+    const templateEditUser = await loadTemplate("./pages/userAdmin/editUser/editUser.html")
+    const templateShowUsers = await loadTemplate("./pages/userAdmin/showUsers/showUsers.html")
 
+    
   
     adjustForMissingHash()
   
     const router = new Navigo("/", { hash: true });
-    //Not especially nice, BUT MEANT to simplify things. Make the router global so it can be accessed from all js-files
     window.router = router
-  
+    
+
     router
       .hooks({
         before(done, match) {
@@ -26,22 +33,39 @@ import {
         }
       })
       .on({
-        //For very simple "templates", you can just insert your HTML directly like below
-        "/": () => document.getElementById("content").innerHTML = `
+        "/": () => {
+          document.getElementById("error").innerText = ""
+          document.getElementById("content").innerHTML = `
           <h2>Home</h2>
-          <img style="width:50%;max-width:600px;margin-top:1em;" src="./images/cars.png">
-          <p style='margin-top:1em;font-size: 1.5em;color:darkgray;'>
-            Car's 'R' Us - Created, as a help to make GREAT fullstack developers <span style='font-size:2em;'>&#128516;</span>
-          </p>
-       `,
-        "/loginPage": () => {
-            console.log("The function was called.")
+          `
+        },
+          "/loginPage": () => {
+            document.getElementById("error").innerText = ""
           renderTemplate(templateLogin, "content")
           initLogin()
+          
         },
         "/logout": () => {
+          document.getElementById("error").innerText = ""
           logout()
-        }
+        },
+        "/userAdmin/showUsers": () => {
+          document.getElementById("error").innerText = ""
+          renderTemplate(templateShowUsers, "content")
+          initUsers()
+        },
+        "/userAdmin/addUser": () => {
+          document.getElementById("error").innerText = ""
+          renderTemplate(templateAddUser, "content")
+          initAddUser()
+        },
+        "/userAdmin/editUser": (match) => {
+          document.getElementById("error").innerText = ""
+          renderTemplate(templateEditUser, "content")
+          initEditUser(match)
+        },
+        
+        
       })
       .notFound(() => {
         renderTemplate(templateNotFound, "content")
@@ -49,6 +73,7 @@ import {
       .resolve()
   });
   
+
   
   window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
     alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber
