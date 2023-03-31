@@ -1,90 +1,115 @@
+
+
+
 export function loadUserDom() {
-const shifts = [
-    {id:1, date:"2023-03-27T04:00:00", workhours:"03:00:00", location:"Bakken", username:"Kristian"},
-    {id:2, date:"2023-03-28T07:00:00", workhours:"03:00:00", location:"Pappas Pizza", username:"Ferhat"},
-    {id:3, date:"2023-03-29T05:00:00", workhours:"05:00:00", location:"KEA", username:"Per"},
-    {id:4, date:"2023-03-31T03:00:00", workhours:"07:00:00", location:"Eksamen", username:"Team Beaver"}
-]
 
-shifts.forEach((shift) => {
-    // Create a new Date object with the date string
-    const date = new Date(shift.date);
+  function getStartOfWeek(date) {
+    const startOfWeek = new Date(date);
+    const day = startOfWeek.getDay();
+    const diff = day - 1; // to set Monday as the first day of the week
+    startOfWeek.setDate(startOfWeek.getDate() - diff);
+    return startOfWeek;
+  }
+  function getWeekNumber(date) {
+    const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+    const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+  }
+  function updateWeekNumber(date) {
+    const weekNumber = getWeekNumber(date);
+    document.getElementById("current-week").innerHTML = "Week " + weekNumber;
+  }
 
-    const startyear = date.getFullYear();
-    const startmonth = date.getMonth() + 1; // Add 1 because getMonth() returns 0-based index
-    const startday = date.getDate();
-    const starthour = date.getHours();
-    var startminute = date.getMinutes();
-    const startsecond = date.getSeconds();
+  
+  function updateWeekdayDates(shifts, startOfWeek) {
+    
+    // Clear all events
+    const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+    weekdays.forEach(weekday => {
+      document.getElementById(weekday + "-event").className = "";
+      document.getElementById(weekday + "-title").innerHTML = "";
+      document.getElementById(weekday + "-time").innerHTML = "";
+    });
+  
+    // Set dates for the current week
+    weekdays.forEach((weekday, index) => {
+      const currentDate = new Date(startOfWeek);
+      currentDate.setDate(currentDate.getDate() + index);
+      document.getElementById(weekday + "-date").innerHTML = currentDate.getDate();
+    });
+    // Check if the date belongs to the current week
+  function isInCurrentWeek(date) {
+    const weekNumber = getWeekNumber(date);
+    return weekNumber === getWeekNumber(startOfWeek);
+  }
 
-    // Get the weeks
-    const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; // Define an array with the weekday names
-    const weekday = date.getDay(); // Get the weekday (0-6) from the Date object
-    const weekdayName = weekdays[weekday]; // Get the name of the weekday from the weekdays array
+// Display shifts for the current week
+shifts.forEach(shift => {
+  const workStartDate = new Date(shift.workStart);
+  const workEndDate = new Date(shift.workEnd);
 
-    // Get workhours details
-    var [hours, minutes, seconds] = shift.workhours.split(':').map(Number);
-    const workHoursDate = new Date();
-    workHoursDate.setHours(hours);
-    workHoursDate.setMinutes(minutes);
-    workHoursDate.setSeconds(seconds);
-
-    if(startminute == 0){ // To make sure that minutes comes out as 00:00 and not 00:0
-        startminute = "00"
-    }
-
-    if(minutes == 0){ // To make sure that minutes comes out as 00:00 and not 00:0
-        minutes ="00"
-    }
-
-    // DOM manipulation using switch case
-    switch (weekdayName) {
-        case "Monday":
-            document.getElementById("monday-date").innerHTML = startday;
-            document.getElementById("monday-event").className = "event start-"+starthour+" end-"+(starthour+hours)+" securities";
-            document.getElementById("monday-title").innerHTML = shift.location;
-            document.getElementById("monday-time").innerHTML = ""+starthour+":"+startminute+" - "+(starthour+hours)+ ":"+minutes;
-            break;
-        case "Tuesday":
-            document.getElementById("tuesday-date").innerHTML = startday;
-            document.getElementById("tuesday-event").className = "event start-"+starthour+" end-"+(starthour+hours)+" securities";
-            document.getElementById("tuesday-title").innerHTML = shift.location;
-            document.getElementById("tuesday-time").innerHTML = ""+starthour+":"+startminute+" - "+(starthour+hours)+ ":"+minutes;
-            break;
-    case "Wednesday":
-      document.getElementById("wednesday-date").innerHTML = startday;
-      document.getElementById("wednesday-event").className = "event start-"+starthour+" end-"+(starthour+hours)+" securities";
-      document.getElementById("wednesday-title").innerHTML = shift.location;
-      document.getElementById("wednesday-time").innerHTML = ""+starthour+":"+startminute+" - "+(starthour+hours)+ ":"+minutes;
-      break;
-    case "Thursday":
-      document.getElementById("thursday-date").innerHTML = startday;
-      document.getElementById("thursday-event").className = "event start-"+starthour+" end-"+(starthour+hours)+" securities";
-      document.getElementById("thursday-title").innerHTML = shift.location;
-      document.getElementById("thursday-time").innerHTML = ""+starthour+":"+startminute+" - "+(starthour+hours)+ ":"+minutes;
-      break;
-    case "Friday":
-      document.getElementById("friday-date").innerHTML = startday;
-      document.getElementById("friday-event").className = "event start-"+starthour+" end-"+(starthour+hours)+" securities";
-      document.getElementById("friday-title").innerHTML = shift.location;
-      document.getElementById("friday-time").innerHTML = ""+starthour+":"+startminute+" - "+(starthour+hours)+ ":"+minutes;
-      break;
-      case "Saturday":
-      document.getElementById("saturday-date").innerHTML = startday;
-      document.getElementById("saturday-event").className = "event start-"+starthour+" end-"+(starthour+hours)+" securities";
-      document.getElementById("saturday-title").innerHTML = shift.location;
-      document.getElementById("saturday-time").innerHTML = ""+starthour+":"+startminute+" - "+(starthour+hours)+ ":"+minutes;
-      break;
-      case "Sunday":
-      document.getElementById("sunday-date").innerHTML = startday;
-      document.getElementById("sunday-event").className = "event start-"+starthour+" end-"+(starthour+hours)+" securities";
-      document.getElementById("sunday-title").innerHTML = shift.location;
-      document.getElementById("sunday-time").innerHTML = ""+starthour+":"+startminute+" - "+(starthour+hours)+ ":"+minutes;
-      break;
-      default:
-      console.log("Invalid weekday");
+  // If the shift does not belong to the current week, skip it
+  if (!isInCurrentWeek(workStartDate)) {
+    return;
+  }
+      const startHourAndMinute = workStartDate.getHours() + ":" + workStartDate.getMinutes();
+      const endHourAndMinute = workEndDate.getHours() + ":" + workEndDate.getMinutes();
+  
+      const startHour = workStartDate.getHours();
+      const endHour = workEndDate.getHours();
+  
+      const startWeekday = weekdays[workStartDate.getDay()-1];
+      const endWeekday = weekdays[workEndDate.getDay()-1];
+  
+      if (startWeekday === endWeekday) {
+        addShiftToCalendar(startWeekday, workStartDate.getDate(), startHour, endHour, shift.location, startHourAndMinute, endHourAndMinute);
+      } else {
+        // Add the first part of the shift to the start day
+        addShiftToCalendar(startWeekday, workStartDate.getDate(), startHour, "24", shift.location, startHourAndMinute, endHourAndMinute);
+  
+        // Add the second part of the shift to the end day
+        addShiftToCalendar(endWeekday, workEndDate.getDate(), "0", endHour, shift.location, startHourAndMinute, endHourAndMinute);
       }
-      startminute = 0;
-      minutes = 0;
-    })
+    });
+  }
+    
+  
+  const people = { id: 1, name: "Kristian Wede", age: 22, email: "kristanwede@gmail.com", tlf: "22 22 22 22" }
+
+  document.getElementById("name-id").innerHTML = people.name;
+  document.getElementById("name-id").style.fontSize = "1.5rem";
+  document.getElementById("userid-id").innerHTML = "id " + people.id;
+  document.getElementById("email-id").innerHTML = people.email;
+  document.getElementById("tlf-id").innerHTML = people.tlf;
+  
+  const shifts = [
+    { id: 1, workStart: "2023-03-27T04:00:00", workEnd: "2023-03-27T07:00:00", location: "Bakken" },
+    { id: 2, workStart: "2023-03-28T02:30:00", workEnd: "2023-03-28T09:45:00", location: "Bakken" },
+    { id: 3, workStart: "2023-03-29T22:00:00", workEnd: "2023-03-30T04:00:00", location: "aftenVagt" },
+    { id: 3, workStart: "2023-04-02T23:00:00", workEnd: "2023-04-03T06:00:00", location: "aftenVagt2" }
+  ];
+  
+  function addShiftToCalendar(dayIdPrefix, startDay, startTime, endTime, location, startHourAndMinute, endHourAndMinute) {
+    document.getElementById(dayIdPrefix + "-event").className = "event start-" + startTime + " end-" + endTime + " securities";
+    document.getElementById(dayIdPrefix + "-title").innerHTML = location;
+    document.getElementById(dayIdPrefix + "-time").innerHTML = startHourAndMinute + " - " + endHourAndMinute;
+  }
+  
+  document.getElementById("previous-week").addEventListener("click", () => {
+    startOfWeek.setDate(startOfWeek.getDate() - 7);
+    updateWeekNumber(startOfWeek);
+    updateWeekdayDates(shifts, startOfWeek);
+  });
+  
+  document.getElementById("next-week").addEventListener("click", () => {
+    startOfWeek.setDate(startOfWeek.getDate() + 7);
+    updateWeekNumber(startOfWeek);
+    updateWeekdayDates(shifts, startOfWeek);
+  });
+  
+  const startOfWeek = getStartOfWeek(new Date());
+  updateWeekNumber(startOfWeek);
+  updateWeekdayDates(shifts, startOfWeek);
+
+
   }
