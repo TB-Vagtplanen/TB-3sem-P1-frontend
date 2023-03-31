@@ -153,9 +153,11 @@ async function submitEditedUser() {
 
   try {
     //maybe use modal as a response
-    
+
     const user = await fetch(LOCAL_API_URL + "/users", options).then((res) =>
       handleHttpErrors(res)
     );
-  } catch (err) {}
+  } catch (err) {
+    
+  }
 }

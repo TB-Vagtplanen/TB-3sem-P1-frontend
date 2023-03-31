@@ -8,6 +8,7 @@ import {
   import { initAddUser } from "./pages/userAdmin/addUser/addUser.js"
   import { initEditUser } from "./pages/userAdmin/editUser/editUser.js"
   import { initUsers } from "./pages/userAdmin/showUsers/showUsers.js"
+  import { initAdminCalendar} from "./pages/adminCalendar/adminCalendar.js"
 
 
   window.addEventListener("load", async () => {
@@ -16,6 +17,7 @@ import {
     const templateAddUser = await loadTemplate("./pages/userAdmin/addUser/addUser.html")
     const templateEditUser = await loadTemplate("./pages/userAdmin/editUser/editUser.html")
     const templateShowUsers = await loadTemplate("./pages/userAdmin/showUsers/showUsers.html")
+    const templateAdminCalendar = await loadTemplate("./pages/adminCalendar/adminCalendar.html")
 
     
   
@@ -64,6 +66,11 @@ import {
           renderTemplate(templateEditUser, "content")
           initEditUser(match)
         },
+        "/adminCalendar" : () => {
+          document.getElementById("error").innerText = ""
+          renderTemplate(templateAdminCalendar, "content")
+          initAdminCalendar()
+        }
         
         
       })

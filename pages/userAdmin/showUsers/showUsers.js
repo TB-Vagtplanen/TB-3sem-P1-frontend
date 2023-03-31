@@ -29,12 +29,11 @@ export async function getAllUsers() {
 }
 
 async function getAllActiveUsers() {
-
   const options = makeOptions("GET", "", true) 
-
   try {
     const users = await fetch(LOCAL_API_URL + "/users/active", options).then((res) =>
     handleHttpErrors(res));
+
     showAllData(users);
     fetchedUsers = users;
     document.getElementById("count").innerText = "(" + users.length + ")"
