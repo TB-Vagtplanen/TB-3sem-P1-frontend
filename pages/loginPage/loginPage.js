@@ -1,7 +1,7 @@
 import { API_URL, LOCAL_API_URL} from "../../settings.js"
 import {handleHttpErrors} from "../../utils.js"
 
-const URL = LOCAL_API_URL + "/auth/login"
+const URL = API_URL + "/auth/login"
 
 export function initLogin() {
   console.log("attempting Logging in")
@@ -13,6 +13,9 @@ export function logout(){
   document.getElementById("logout-id").style.display="none"
   document.getElementById("adminCalendar-id").style.display="none"
   document.getElementById("userCalendar-id").style.display="none"
+  document.getElementById("addUser").style.display="none"
+  document.getElementById("editUser").style.display="none"
+  document.getElementById("showUsers").style.display="none"
   localStorage.clear()
 
 
@@ -52,8 +55,12 @@ async function login(evt) {
 
     if (localStorage.getItem("roles", response.roles)=="ADMIN") {
       document.getElementById("adminCalendar-id").style.display="block"
+      document.getElementById("addUser").style.display="block"
+      document.getElementById("editUser").style.display="block"
+      document.getElementById("showUsers").style.display="block"
     } else {
      document.getElementById("userCalendar-id").style.display="block"
+     
     }
 
     window.router.navigate("")
