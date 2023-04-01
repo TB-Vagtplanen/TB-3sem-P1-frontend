@@ -1,10 +1,9 @@
-import { API_URL, LOCAL_API_URL} from "../../settings.js"
+import { API_URL} from "../../settings.js"
 import {handleHttpErrors} from "../../utils.js"
 
 const URL = API_URL + "/auth/login"
 
 export function initLogin() {
-  console.log("attempting Logging in")
   document.getElementById("login-btn").onclick = login
 }
 
@@ -50,8 +49,6 @@ async function login(evt) {
 
     document.getElementById("login-id").style.display="none"
     document.getElementById("logout-id").style.display="block"
-    
-    console.log(localStorage.getItem("roles"))
 
     if (localStorage.getItem("roles", response.roles)=="ADMIN") {
       document.getElementById("adminCalendar-id").style.display="block"

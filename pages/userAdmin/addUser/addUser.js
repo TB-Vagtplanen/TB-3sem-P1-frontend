@@ -1,4 +1,4 @@
-import { LOCAL_API_URL, API_URL } from "../../../settings.js"
+import { API_URL} from "../../../settings.js"
 import { handleHttpErrors, makeOptions } from "../../../utils.js"
 
 let phones = {};
@@ -31,7 +31,7 @@ function makePassword() {
 async function addUser(user) {
     const options = makeOptions("POST", user, true) 
     try {
-        await fetch(LOCAL_API_URL+"/users",options).then(handleHttpErrors)
+        await fetch(API_URL+"/users",options).then(handleHttpErrors)
         window.router.navigate("userAdmin/showUsers");
     } catch (err) {
         document.getElementById("error").innerHTML = err

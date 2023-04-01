@@ -1,4 +1,4 @@
-import { LOCAL_API_URL } from "../../../settings.js";
+import { API_URL} from "../../../settings.js";
 import { makeOptions, sanitizeStringWithTableRows } from "../../../utils.js";
 import { handleHttpErrors } from "../../../utils.js";
 
@@ -17,7 +17,7 @@ export async function getAllUsers() {
   const options = makeOptions("GET", "", true) 
 
   try {
-    const users = await fetch(LOCAL_API_URL + "/users", options).then((res) =>
+    const users = await fetch(API_URL + "/users", options).then((res) =>
     handleHttpErrors(res));
     showAllData(users);
     fetchedUsers = users;
@@ -33,7 +33,7 @@ async function getAllActiveUsers() {
   const options = makeOptions("GET", "", true) 
 
   try {
-    const users = await fetch(LOCAL_API_URL + "/users/active", options).then((res) =>
+    const users = await fetch(API_URL + "/users/active", options).then((res) =>
     handleHttpErrors(res));
     showAllData(users);
     fetchedUsers = users;
@@ -128,7 +128,7 @@ async function archiveUser(username) {
   try {
     const options = makeOptions("PATCH", {}, true)
       
-    await fetch(LOCAL_API_URL + "/users/enabled/" + username, options).then((res) =>
+    await fetch(API_URL + "/users/enabled/" + username, options).then((res) =>
     handleHttpErrors(res));
   } catch (err) {
     document.getElementById("error").innerHTML = err

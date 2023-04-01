@@ -73,15 +73,12 @@ export function renderTemplate(templ, contentId) {
   export async function   handleHttpErrors(res) {
     if (!res.ok) {
       const errorResponse = await res.json();
-      console.log("Hello form the HandleHttpErrors:")
-      console.log(errorResponse)
       const error = new Error(errorResponse.message)
       //@ts-ignore
       error.fullError = errorResponse
       throw error
     }
     const result = res.json();
-    console.log("Hello to Json: " + result);
     return result
   }
   
