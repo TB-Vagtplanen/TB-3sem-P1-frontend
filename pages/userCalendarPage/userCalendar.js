@@ -1,7 +1,15 @@
-const URL = "https://tbsem3proj1.azurewebsites.net/api/shifts/3"; //HARDCODED
+import { makeOptions } from "../../utils.js"; 
 
 export function loadUserDOM() {
 
+  function updateCurrentMonth(date) {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const currentMonth = monthNames[date.getMonth()];
+    document.getElementById('current-month').innerText = currentMonth;
+  }
+  
   function getStartOfWeek(date) {
     const startOfWeek = new Date(date);
     const day = startOfWeek.getDay();
@@ -75,73 +83,71 @@ export function loadUserDOM() {
     });
   }
 
-  
+  const options = makeOptions("GET", "", true)
+  const userFetch = localStorage.getItem("user")
+  const url = "http://localhost:8080/api/users/" + userFetch;
 
-  // Fetch shifts data from the API
-  const url = "https://tbsem3proj1.azurewebsites.net/api/shifts"; //HARDCODED
 
-console.log(url)
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
-      const shifts = data.map(shift => {
-        const { id, workStart, workEnd, location, user, isSick } = shift;
-        return {
-          id,
-          workStart,
-          workEnd,
-          location,
-          user,
-          isSick
+     fetch(url,options)
+     .then(response => response.json())
+     .then(data => {
+       console.log(data)
+       const username = data.username;
+       const firstName = data.firstName;
+       const lastName = data.lastName;
+       const email = data.email;
+       const mobilePhone = data.phones.mobile;
+       const shifts = data.shifts;
+       console.log(username)
+
+       shifts.forEach(shift => {
+        const shiftId = shift.id;
+        const workStart = shift.workStart;
+        const workEnd = shift.workEnd;
+        const location = shift.location;
+        const isSick = shift.isSick;
+
+        console.log(shiftId)
+        console.log(workStart)
         
-        };
+// Initialize the calendar with the fetched shifts data
+const startOfWeek = getStartOfWeek(new Date());
+updateWeekNumber(startOfWeek);
+updateWeekdayDates(shifts, startOfWeek);
+updateCurrentMonth(startOfWeek);
 
-      });
+// Update the calendar when the previous or next week buttons are clicked
+document.getElementById("previous-week").addEventListener("click", () => {
+  startOfWeek.setDate(startOfWeek.getDate() - 7);
+  updateWeekNumber(startOfWeek);
+  updateWeekdayDates(shifts, startOfWeek);
+  updateCurrentMonth(startOfWeek);
+});
 
-      // Initialize the calendar with the fetched shifts data
-      const startOfWeek = getStartOfWeek(new Date());
-      updateWeekNumber(startOfWeek);
-      updateWeekdayDates(shifts, startOfWeek);
+document.getElementById("next-week").addEventListener("click", () => {
+  startOfWeek.setDate(startOfWeek.getDate() + 7);
+  updateWeekNumber(startOfWeek);
+  updateWeekdayDates(shifts, startOfWeek);
+  updateCurrentMonth(startOfWeek);
+});
 
-      // Update the calendar when the previous or next week buttons are clicked
-      document.getElementById("previous-week").addEventListener("click", () => {
-        startOfWeek.setDate(startOfWeek.getDate() - 7);
-        updateWeekNumber(startOfWeek);
-        updateWeekdayDates(shifts, startOfWeek);
-      });
+     })
 
-      document.getElementById("next-week").addEventListener("click", () => {
-        startOfWeek.setDate(startOfWeek.getDate() + 7);
-        updateWeekNumber(startOfWeek);
-        updateWeekdayDates(shifts, startOfWeek);
-      });
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
+       document.getElementById("name-id").innerHTML = firstName + " " + lastName;
+       document.getElementById("name-id").style.fontSize = "1.5rem";
+       document.getElementById("userid-id").innerHTML = "id " + username;
+       document.getElementById("email-id").innerHTML = email;
+       document.getElementById("tlf-id").innerHTML = mobilePhone;
 
-    fetch(URL)
-    .then(response => response.json())
-    .then(data => {
-      const user = data.user;
-      const {username, email, firstName, lastName, street, zip, city, phones} = user;
-      const mobile = phones.mobile;
-      
-      document.getElementById("name-id").innerHTML = firstName + " " + lastName;
-      document.getElementById("name-id").style.fontSize = "1.5rem";
-      document.getElementById("userid-id").innerHTML = "id " + username;
-      document.getElementById("email-id").innerHTML = email;
-      document.getElementById("tlf-id").innerHTML = mobile;
-    })
-    .catch(error => console.error(error));
-    const people = { id: 1, name: "Kristian Wede", age: 22, email: "kristanwede@gmail.com", tlf: "22 22 22 22" };
-  
-  
+       
+     })
+     .catch(error => console.error(error));   
+
 
     function addShiftToCalendar(dayIdPrefix, startDay, startTime, endTime, location, startHourAndMinute, endHourAndMinute) {
       document.getElementById(dayIdPrefix + "-event").className = "event start-" + startTime + " end-" + endTime + " securities";
       document.getElementById(dayIdPrefix + "-title").innerHTML = location;
       document.getElementById(dayIdPrefix + "-time").innerHTML = startHourAndMinute + " - " + endHourAndMinute;
       }
+
     }

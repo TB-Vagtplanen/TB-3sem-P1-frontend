@@ -1,17 +1,26 @@
 <template>
-  <div id="week-navigation" style="position: absolute; top: 0; right: 0;">
+ 
+
+  <div class="card-container">
+    <div class="card">
+      <div class="card-image">
+        <img src="../../images/user.png" alt="User" />
+      </div>
+      <h1 id="name-id">Navn</h1>
+      <p id="userid-id" class="card-info">userid</p>
+      <p id="email-id" class="card-info">email</p>
+      <button id="tlf-id">tlf nummer</button>
+    </div>
+  </div>
+  
+<div>
+  <div id="week-navigation" class="week-navigation">
     <button id="previous-week">&larr;</button>
     <span id="current-week"></span>
     <button id="next-week">&rarr;</button>
+    <span id="current-month" class="current-month"></span>
   </div>
 
-  <div class="card">
-    <img src="../../images/user.png" alt="John" style="width:100%; size: 300 × 200 px;">
-    <h1 id="name-id">Navn</h1>
-    <p id="userid-id" class="cardTitle">userid</p>
-    <p id="email-id" class="cardTitle">email</p>
-    <p ><button id="tlf-id">tlf nummer</button></p>
-  </div>
 <div class="calendar">
     <div class="timeline">
       <div class="spacer"></div>
@@ -141,6 +150,7 @@
 
 
     </div>
+  </div>
   </div>
 
   <script> 
