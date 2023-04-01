@@ -1,7 +1,7 @@
-import { API_URL } from "../../settings.js"
+import { API_URL, LOCAL_API_URL} from "../../settings.js"
 import {handleHttpErrors} from "../../utils.js"
 
-const URL = API_URL + "/auth/login"
+const URL = LOCAL_API_URL + "/auth/login"
 
 export function initLogin() {
   console.log("attempting Logging in")
@@ -42,7 +42,7 @@ async function login(evt) {
   try {
     const response = await fetch(URL, options).then(res=>handleHttpErrors(res))
     localStorage.setItem("user",response.username)
-    localStorage.setItem("token",response.token)
+    localStorage.setItem("Token",response.token)
     localStorage.setItem("roles",response.roles)
 
     document.getElementById("login-id").style.display="none"

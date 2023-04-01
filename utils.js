@@ -70,8 +70,7 @@ export function renderTemplate(templ, contentId) {
    * as JSON
    * Use like this--> const responseData = await fetch(URL,{..}).then(handleHttpErrors)
    */
-  export async function handleHttpErrors(res) {
-    console.log(res)
+  export async function   handleHttpErrors(res) {
     if (!res.ok) {
       const errorResponse = await res.json();
       console.log("Hello form the HandleHttpErrors:")

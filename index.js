@@ -4,15 +4,23 @@ import {
     setActiveLink, adjustForMissingHash, renderTemplate, loadTemplate
   } from "./utils.js"
   
+  import { initLogin,logout, checkAdmin } from "./pages/loginPage/loginPage.js"
+  import { initAddUser } from "./pages/userAdmin/addUser/addUser.js"
+  import { initEditUser } from "./pages/userAdmin/editUser/editUser.js"
+  import { initUsers } from "./pages/userAdmin/showUsers/showUsers.js"
+  import { loadUserDOM } from "./pages/userCalendarPage/userCalendar.js"
   import { initLogin,logout, checkAdmin } from "./pages/loginPage/loginPage.js";
   //import { loadAdminDom } from "./pages/calendarPage/adminCalendar.js"
   import { loadUserDom as initUserCalendarDOM } from "./pages/userCalendarPage/userCalendar.js"
   import { initiateAdminCalendar } from "./pages/calendarPage/adminCalendar.js"
 
-  console.log("testfhdherh")
   window.addEventListener("load", async () => {
   
     const templateLogin = await loadTemplate("./pages/loginPage/loginPage.html")
+    const templateAddUser = await loadTemplate("./pages/userAdmin/addUser/addUser.html")
+    const templateEditUser = await loadTemplate("./pages/userAdmin/editUser/editUser.html")
+    const templateShowUsers = await loadTemplate("./pages/userAdmin/showUsers/showUsers.html")
+
     const templateAdminCalendar = await loadTemplate("./pages/calendarPage/adminCalendar.html")
     const templateUserCalendar = await loadTemplate("./pages/userCalendarPage/userCalendar.html")
 
@@ -20,9 +28,9 @@ import {
     adjustForMissingHash()
   
     const router = new Navigo("/", { hash: true });
-    //Not especially nice, BUT MEANT to simplify things. Make the router global so it can be accessed from all js-files
     window.router = router
-  
+    
+
     router
       .hooks({
         before(done, match) {
@@ -31,20 +39,25 @@ import {
         }
       })
       .on({
-        //For very simple "templates", you can just insert your HTML directly like below
-        "/": () => document.getElementById("content").innerHTML = `
+
+        "/": () => {
+          document.getElementById("error").innerText = ""
+          document.getElementById("content").innerHTML = `
           <h2>Home</h2>
           <img style="width:20%;max-width:600px;margin-top:1em;margin-left: 550px;" src="./images/logo.png">
           <p style='margin-top:1em;font-size: 1em;color:darkgray;'>
             Vagtplanen is a software which helps you get a nice view over all your shifts.<span style='font-size:2em;'>&#128516;</span>
           </p>
-       `,
+          `
+        },
         "/loginPage": () => {
-            console.log("The function was called.")
-          renderTemplate(templateLogin, "content")
-          initLogin()
+          document.getElementById("error").innerText = ""
+        renderTemplate(templateLogin, "content")
+        initLogin()
+        
         },
         "/logout": () => {
+          document.getElementById("error").innerText = ""
           logout()
           renderTemplate(templateLogin, "content")
         },
@@ -55,12 +68,12 @@ import {
           //loadAdminDom()
         } else{
           renderTemplate(templateUserCalendar, "content")
-          initUserCalendarDOM()
+          loadUserDom()
         }
         },
         "/userCalendar": () => {
           renderTemplate(templateUserCalendar, "content")
-          initUserCalendarDOM()
+          loadUserDom()
         }
       })
       .notFound(() => {
@@ -69,6 +82,7 @@ import {
       .resolve()
   });
   
+
   
   window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
     alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber

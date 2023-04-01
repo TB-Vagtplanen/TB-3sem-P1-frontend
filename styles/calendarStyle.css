@@ -2,7 +2,7 @@
     --numDays: 5;
     --numHours: 24;
     --timeHeight: 60px;
-    --calBgColor: #fff1f8;
+    --calBgColor: #f1f5ff;
     --eventBorderColor: #f2d3d8;
     --eventColor1: #ffd6d1;
     --eventColor2: #fafaa3;
@@ -15,6 +15,9 @@
     gap: 10px;
     grid-template-columns: auto 1fr;
     margin: 2rem;
+    margin-left: 225px;
+    width: 80em;
+    scale: 100%;
   }
   
   .timeline {
@@ -34,6 +37,9 @@
     grid-template-rows: repeat(var(--numHours), var(--timeHeight));
     border-radius: 5px;
     background: var(--calBgColor);
+  }
+  .start-0 {
+    grid-row-start: 1;
   }
   
   .start-1 {
@@ -105,6 +111,12 @@
   .start-23 {
     grid-row-start: 24;
   }
+  .start-24 {
+    grid-row-start: 25;
+  }
+  .end-0 {
+    grid-row-end: 1;
+  }
   .end-1 {
     grid-row-end: 2;
   }
@@ -174,6 +186,10 @@
   .end-23 {
     grid-row-end: 24;
   }
+  .end-24 {
+    grid-row-end: 25;
+  }
+  
   
   
   .title {
@@ -217,7 +233,7 @@
   
   .date {
     display: flex;
-    gap: 1em;
+    gap: 0em;
   }
   
   .date-num {
@@ -228,8 +244,36 @@
   
   .date-day {
     display: inline;
-    font-size: 3rem;
+    font-size: 30px;
     font-weight: 100;
   }
 
-  
+  .week-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .week-navigation button {
+    background-color: #72b9f3;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px 24px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    border-radius: 4px;
+    margin: 0 1rem;
+  }
+  .week-navigation button:hover {
+    background-color: #45a049;
+  }
+  .week-navigation .current-month {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin: 0 1rem;
+  }
