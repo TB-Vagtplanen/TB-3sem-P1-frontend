@@ -14,10 +14,10 @@
     display: grid;
     gap: 10px;
     grid-template-columns: auto 1fr;
-    margin: 2rem;
-    margin-left: 225px;
+    margin: -8rem;
+    margin-left: 95px;
     width: 80em;
-    scale: 100%;
+    scale: 80%;
   }
   
   .timeline {
