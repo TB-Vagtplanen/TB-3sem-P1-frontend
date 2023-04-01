@@ -70,7 +70,7 @@ export function renderTemplate(templ, contentId) {
    * as JSON
    * Use like this--> const responseData = await fetch(URL,{..}).then(handleHttpErrors)
    */
-  export async function handleHttpErrors(res) {
+  export async function   handleHttpErrors(res) {
     if (!res.ok) {
       const errorResponse = await res.json();
       const error = new Error(errorResponse.message)
@@ -106,7 +106,7 @@ export function renderTemplate(templ, contentId) {
       opts.body = JSON.stringify(body);
     }
   
-    if(addToken && localStorage.getItem("token")){
+    if(addToken && localStorage.getItem("Token")){
       opts.headers.Authorization = "Bearer " + localStorage.getItem("Token");
     }
   

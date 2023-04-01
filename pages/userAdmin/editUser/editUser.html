@@ -1,0 +1,72 @@
+<template>
+    <div class="editUser">
+        <div>
+            <div class="findUser">
+                <div>
+                    <label for="username">Username</label>
+                    <input id="username">
+                </div>
+                <div>
+                    <label class="error" id="error"></label>
+                    <button id="btn-find-user"> Find user </button>
+                </div>
+            </div>
+            <div class="userInfo">
+                <div>
+                    <label for="firstName">First Name</label>
+                    <input id="firstName">
+                </div>
+                <div>
+                    <label for="lastName">Last Name</label>
+                    <input id="lastName">
+                </div>
+                <div>
+                    <label for="street">Street</label>
+                    <input id="street">
+                </div>
+                <div>
+                    <label for="zip">Zip</label>
+                    <input id="zip">
+                </div>
+                <div>
+                    <label for="city">City</label>
+                    <input id="city">
+                </div>
+                <div>
+                    <label for="email">Email</label>
+                    <input id="email">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="phones">
+                <div>
+                    <label for="phoneName">Phone name</label>
+                    <input id="phoneName">
+                </div>
+                <div>
+                    <label for="phoneNumber">Phone number</label>
+                    <input id="phoneNumber">
+                </div>
+                <div>
+                    <button id="btn-add-phone">Add Phone</button>
+                </div>
+            </div>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phone Name</th>
+                            <th>Phone Number</th>
+                        </tr>
+                    </thead>
+                    <tbody id="phoneList">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <button id="btn-edited-user-submit">submit edited user</button>
+        </div>
+    </div>
+</template>
