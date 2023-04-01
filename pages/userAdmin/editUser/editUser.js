@@ -1,4 +1,4 @@
-import { LOCAL_API_URL } from "../../../settings.js";
+import { API_URL } from "../../../settings.js";
 import { handleHttpErrors, makeOptions } from "../../../utils.js";
 import { sanitizeStringWithTableRows } from "../../../utils.js";
 
@@ -50,7 +50,7 @@ async function renderUser(username) {
 
   try {
     const options = makeOptions("GET", "", true)
-    const user = await fetch(LOCAL_API_URL + "/users/" + username, options).then((res) =>
+    const user = await fetch(API_URL + "/users/" + username, options).then((res) =>
       handleHttpErrors(res)
     );
 
@@ -154,7 +154,7 @@ async function submitEditedUser() {
   try {
     //maybe use modal as a response
     
-    const user = await fetch(LOCAL_API_URL + "/users", options).then((res) =>
+    const user = await fetch(API_URL + "/users", options).then((res) =>
       handleHttpErrors(res)
     );
   } catch (err) {}

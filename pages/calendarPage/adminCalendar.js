@@ -51,11 +51,6 @@ export function initiateAdminCalendar(weekNumber) {
             fetchedData.push({ username, shifts });
             });
 
-            //console.log("TEST" + fetchedData); // Log the fetchedData array to see the result
-
-            console.log('Fetched data:', fetchedData);
-            
-
             generateCalendar(); //Call generateCalendar() here to ensure it's executed after the data is fetched
             
             } catch (error) {
@@ -135,7 +130,6 @@ export function initiateAdminCalendar(weekNumber) {
         const shiftStart = new Date(shift.workStart);
         const shiftEnd = new Date(shift.workEnd);
 
-        //console.log(test);
 
         const startHour = shiftStart.getHours().toString().padStart(2, "0");
         const startMinute = shiftStart.getMinutes().toString().padStart(2, "0");
@@ -259,9 +253,6 @@ export function initiateAdminCalendar(weekNumber) {
                 worker.shifts.splice(shiftIndex, 1);
             }
 
-            //Fetch to delete the shift by its ID
-            console.log("Trying to delete shift with ID" + shift.id)
-
 
             try{
 
@@ -271,16 +262,6 @@ export function initiateAdminCalendar(weekNumber) {
                     handleHttpErrors(response)
                 )
                 
-
-                    /*  
-                  //Is the current week.
-                const currentViewedWeek = document.getElementById("weekDates").innerHTML.split(':')[0].split(' ')[1];
-
-                  initiateAdminCalendar(currentViewedWeek);
-
-                  */
-
-            console.log(deleteResult);
 
             }catch(error){
                 console.log(error)
@@ -307,9 +288,6 @@ export function initiateAdminCalendar(weekNumber) {
             const workEnd = new Date(day.getFullYear(), day.getMonth(), day.getDate(), parseInt(shiftEnd.substr(0, 2)), parseInt(shiftEnd.substr(3, 2)));
 
 
-            console.log(workStart)
-            console.log(workEnd)
-
             // If it's a new shift, create a new shift object and add it to the worker's shifts.
 
 
@@ -321,15 +299,8 @@ export function initiateAdminCalendar(weekNumber) {
                 username: worker.username, // Assuming you need to send the worker's username
             };
 
-                console.log("Workstart: " + body.workStart)
-                console.log("workEnd: " + body.workEnd)
-                console.log("location: " + body.location)
-                console.log("isSick: " + body.isSick)
-                console.log("username: " + body.username)
 
             if (isNewShift) {
-
-                console.log("It's a new shift!")
 
                 const addedShift = await addShiftFetch(body);
             
@@ -344,12 +315,8 @@ export function initiateAdminCalendar(weekNumber) {
                       // Add the new shift to the worker's shifts
                       worker.shifts.push(addedShift);
 
-                      console.log("Is shift added?",addedShift);
-
             } else {
  
-                console.log("It's an old shift!")
-
                 const options = makeOptions("PUT",body,false)
 
                     // Update the existing shift data
@@ -367,7 +334,6 @@ export function initiateAdminCalendar(weekNumber) {
                 }
     
                 const updatedShift = await response.json();
-                console.log("Shift updated:", updatedShift);
 
     
             } catch (error) {
@@ -401,7 +367,6 @@ export function initiateAdminCalendar(weekNumber) {
         // Add an empty cell for the top-left corner
         headerRow.appendChild(document.createElement("th"));
 
-        //console.log("Fetched data in generateCalendar: ",fetchedData)
        
         // Add days of the week as headers
         daysOfWeek.forEach((day) => {
@@ -416,7 +381,6 @@ export function initiateAdminCalendar(weekNumber) {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        //console.log("Fetched data in generateCalendar AFTER updateWeek: ",fetchedData)
 
         fetchedData.forEach((workerData) => {
             const row = document.createElement("tr");
@@ -430,7 +394,6 @@ export function initiateAdminCalendar(weekNumber) {
             for (let i = 0; i < 7; i++) {
                 const day = new Date(firstDay);
                 day.setDate(firstDay.getDate() + i);
-                //console.log('Worker Data:', workerData.username, 'Shifts:', workerData.shifts,'For the day:', day);
 
                 const cell = document.createElement("td");
 
@@ -441,16 +404,13 @@ export function initiateAdminCalendar(weekNumber) {
                 const shifts = workerData.shifts.filter((s) => {
                     const shiftDate = new Date(s.workStart).setHours(0, 0, 0, 0);
                     const isEqual = shiftDate === day.valueOf();
-                    //console.log('Shift start:', s.start, 'Shift date:', shiftDate, 'Day:', day.valueOf(), 'Is equal:', isEqual);
                     return isEqual;
                 });
 
-                //console.log('Filtered shifts:', shifts);
 
                 //For the worker's workday that matches that day, it takes the first occurrence of a shift and puts it into the cell.
                 const shift = shifts[0];
                 if (shifts.length > 0) {
-                    console.log('Rendering shift:', shift);
                     cell.innerHTML = formatShift(shift);
                 
 
@@ -516,8 +476,6 @@ async function addShiftFetch(shift){
       .then((response) => {
         return handleHttpErrors(response);
       })
-
-      console.log("Added the new shift:",addedShift);
 
       return addedShift;
 

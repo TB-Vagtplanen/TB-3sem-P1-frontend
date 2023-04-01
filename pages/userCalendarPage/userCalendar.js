@@ -1,4 +1,5 @@
 import { makeOptions } from "../../utils.js"; 
+import { API_URL } from "../../settings.js";
 
 export function loadUserDOM() {
 
@@ -85,20 +86,18 @@ export function loadUserDOM() {
 
   const options = makeOptions("GET", "", true)
   const userFetch = localStorage.getItem("user")
-  const url = "https://tbsem3proj1.azurewebsites.net/api/users/" + userFetch;
+  const url = API_URL + "/users/" + userFetch;
 
 
      fetch(url,options)
      .then(response => response.json())
      .then(data => {
-       console.log(data)
        const username = data.username;
        const firstName = data.firstName;
        const lastName = data.lastName;
        const email = data.email;
        const mobilePhone = data.phones.mobile;
        const shifts = data.shifts;
-       console.log(username)
 
        shifts.forEach(shift => {
         const shiftId = shift.id;
@@ -107,8 +106,6 @@ export function loadUserDOM() {
         const location = shift.location;
         const isSick = shift.isSick;
 
-        console.log(shiftId)
-        console.log(workStart)
         
 // Initialize the calendar with the fetched shifts data
 const startOfWeek = getStartOfWeek(new Date());
