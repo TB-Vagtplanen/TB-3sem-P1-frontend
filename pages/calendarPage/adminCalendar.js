@@ -1,106 +1,71 @@
-export function initiateAdminCalendar() {
-    // Your fetched data would go here:
-    const fetchedData = [
-        {
-            worker: "Alice",
-            shifts: [
-                {
-                    day: new Date("2023-03-20T00:00:00").toISOString(),
-                    name: "Shift A",
-                    start: new Date("2023-03-20T08:00:00"),
-                    end: new Date("2023-03-20T16:00:00"),
-                    isSick: false,
-                },
-                {
-                    day: new Date("2023-03-22T00:00:00").toISOString(),
-                    name: "Shift B",
-                    start: new Date("2023-03-22T16:00:00"),
-                    end: new Date("2023-03-23T00:00:00"),
-                    isSick: false,
-                },
-                {
-                    day: new Date("2023-03-24T00:00:00").toISOString(),
-                    name: "Shift A",
-                    start: new Date("2023-03-24T08:00:00"),
-                    end: new Date("2023-03-24T16:00:00"),
-                    isSick: false,
-                },
-                // ... extra shifts for Alice
-            ],
-        },
-        {
-            worker: "Bob",
-            shifts: [
-                {
-                    day: new Date("2023-03-21T00:00:00").toISOString(),
-                    name: "Shift C",
-                    start: new Date("2023-03-21T08:00:00"),
-                    end: new Date("2023-03-21T16:00:00"),
-                    isSick: false,
-                },
-                {
-                    day: new Date("2023-03-23T00:00:00").toISOString(),
-                    name: "Shift D",
-                    start: new Date("2023-03-23T16:00:00"),
-                    end: new Date("2023-03-24T00:00:00"),
-                    isSick: false,
-                },
-                {
-                    day: new Date("2023-03-25T00:00:00").toISOString(),
-                    name: "Shift C",
-                    start: new Date("2023-03-25T08:00:00"),
-                    end: new Date("2023-03-25T16:00:00"),
-                    isSick: false,
-                },
-            ],
-        },
-        {
-            worker: "Carol",
-            shifts: [
-                {
-                    day: new Date("2023-03-20T00:00:00").toISOString(),
-                    name: "Shift E",
-                    start: new Date("2023-03-20T16:00:00"),
-                    end: new Date("2023-03-21T00:00:00"),
-                    isSick: false,
-                },
-                {
-                    day: new Date("2023-03-22T00:00:00").toISOString(),
-                    name: "Shift F",
-                    start: new Date("2023-03-22T08:00:00"),
-                    end: new Date("2023-03-22T16:00:00"),
-                    isSick: false,
-                },
-                {
-                    day: new Date("2023-03-24T00:00:00").toISOString(),
-                    name: "Shift E",
-                    start: new Date("2023-03-24T16:00:00"),
-                    end: new Date("2023-03-25T00:00:00"),
-                    isSick: false,
-                },
-            ],
-        },
-    ];
+import { API_URL } from "../../settings.js";
+import { handleHttpErrors, makeOptions, sanitizeStringWithTableRows } from "../../utils.js";
+
+export function initiateAdminCalendar(weekNumber) {
+
+
+        // Your fetched data would go here:
+        let fetchedData = []
+    
+        let selectedCell = null;
+    
+        let currentWeekOffset = 0;
+    
+        const shiftTable = document.getElementById("shiftTable");
+        const updateForm = document.getElementById("updateForm");
+        const updateShiftTitle = document.getElementById("updateShiftTitle");
+        const updateShiftStart = document.getElementById("updateShiftStart");
+        const deleteButton = document.getElementById("deleteShift");
+    
+        const updateWorkerName = document.getElementById("updateWorkerName");
+        const updateShiftName = document.getElementById("updateShiftName");
+        const updateShiftEnd = document.getElementById("updateShiftEnd");
+        const updateShiftIsSick = document.getElementById("updateShiftIsSick");
+    
+        const daysOfWeek = [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+        ];
+
+        fillOutFetchedShifts();
+
+    async function fillOutFetchedShifts() {
+
+        const options = makeOptions("GET","",true)
+
+        try {
+            const fetchAllShifts = await fetch(API_URL + "/users/active", options)//Fetching all active users, that also includes the lists of shifts that they have.
+            .then((response) => 
+                handleHttpErrors(response)
+        )
+            
+            fetchAllShifts.forEach(user => {
+            const username = user.username;
+            const shifts = user.shifts;
+
+            fetchedData.push({ username, shifts });
+            });
+
+            //console.log("TEST" + fetchedData); // Log the fetchedData array to see the result
+
+            console.log('Fetched data:', fetchedData);
+            
+
+            generateCalendar(); //Call generateCalendar() here to ensure it's executed after the data is fetched
+            
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById("errorMessage").innerHTML = error;
+            }
+    }
 
     
 
-    // Fetch data from backend here and populate the 'workers' array.
-    // fetch(`${URL}/workers`).then(response => response.json()).then(data => workers = data);
-
-    let selectedCell = null;
-
-    let currentWeekOffset = 0;
-
-    const shiftTable = document.getElementById("shiftTable");
-    const updateForm = document.getElementById("updateForm");
-    const updateShiftTitle = document.getElementById("updateShiftTitle");
-    const updateShiftStart = document.getElementById("updateShiftStart");
-    const deleteButton = document.getElementById("deleteShift");
-
-    const updateWorkerName = document.getElementById("updateWorkerName");
-    const updateShiftName = document.getElementById("updateShiftName");
-    const updateShiftEnd = document.getElementById("updateShiftEnd");
-    const updateShiftIsSick = document.getElementById("updateShiftIsSick");
 
     function deselectCell() {
         // Remove the 'selected' and 'updating' classes from all cells
@@ -127,15 +92,26 @@ export function initiateAdminCalendar() {
         }
     });
 
-    const daysOfWeek = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-    ];
+    //For formatting the dates for fetch correctly.
+    function formatDateInput(date, timeString) {
+        if (timeString) {
+            const timeParts = timeString.split(':');
+            const hour = parseInt(timeParts[0], 10);
+            const minute = parseInt(timeParts[1], 10);
+    
+            date.setHours(hour);
+            date.setMinutes(minute);
+        }
+    
+        const yyyy = date.getFullYear();
+        const MM = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so add 1
+        const dd = String(date.getDate()).padStart(2, '0');
+        const HH = String(date.getHours()).padStart(2, '0');
+        const mm = String(date.getMinutes()).padStart(2, '0');
+        const ss = String(date.getSeconds()).padStart(2, '0');
+    
+        return `${yyyy}-${MM}-${dd} ${HH}:${mm}:${ss}`;
+    }
 
     function getDayName(date) {
         const dayIndex = (date.getDay() + 6) % 7;
@@ -155,35 +131,70 @@ export function initiateAdminCalendar() {
     }
 
     function formatShift(shift) {
-        const startHour = shift.start.getHours().toString().padStart(2, "0");
-        const startMinute = shift.start.getMinutes().toString().padStart(2, "0");
-        const endHour = shift.end.getHours().toString().padStart(2, "0");
-        const endMinute = shift.end.getMinutes().toString().padStart(2, "0");
-        const startDate = formatDate(shift.start);
-        const endDate = formatDate(shift.end);
 
-        return `<span class="shift${shift.isSick ? " sick-day" : ""}">${shift.name
+        const shiftStart = new Date(shift.workStart);
+        const shiftEnd = new Date(shift.workEnd);
+
+        //console.log(test);
+
+        const startHour = shiftStart.getHours().toString().padStart(2, "0");
+        const startMinute = shiftStart.getMinutes().toString().padStart(2, "0");
+        const endHour = shiftEnd.getHours().toString().padStart(2, "0");
+        const endMinute = shiftEnd.getMinutes().toString().padStart(2, "0");
+        const startDate = formatDate(shiftStart);
+        const endDate = formatDate(shiftEnd);
+
+        return `<span class="shift${shift.isSick ? " sick-day" : ""}">${shift.location
             } (${startDate} ${startHour}:${startMinute} - ${endDate} ${endHour}:${endMinute})${shift.isSick ? " <strong>Is sick</strong>" : ""
             }</span>`;
     }
 
-    function updateWeekDates() {
-        const today = new Date();
+    //Gets the current week that is being viewed.
+    function getDateForWeek(weekNumber) {
+        // Get the current date and time
+        var currentDate = new Date();
+      
+        // Get the current day of the week (0-6)
+        var currentDay = currentDate.getDay();
+      
+        // Calculate the number of days to subtract from the current date to get to the start of the week
+        var daysToSubtract = currentDay + 7 * (weekNumber - 1);
+      
+        // Subtract the number of days from the current date to get the first day of the week
+        var firstDayOfWeek = new Date(currentDate.getTime() - (daysToSubtract * 24 * 60 * 60 * 1000));
+      
+        // Set the time to 00:00:00
+        firstDayOfWeek.setHours(0, 0, 0, 0);
+      
+        return firstDayOfWeek;
+      }
+
+    //Gets the corresponding weeks for the calendar.
+    function updateWeekDates(weekNumber) {
+
+        let today; //Added for tmp.
+
+        if(weekNumber){
+            today = getDateForWeek(weekNumber);
+        } else {
+            today = new Date();
+        }
+
         const firstDay = new Date(
             today.getFullYear(),
             today.getMonth(),
             today.getDate() - today.getDay() + 1 + currentWeekOffset * 7
         );
+        
         const lastDay = new Date(firstDay);
         lastDay.setDate(firstDay.getDate() + 6);
 
-        const weekNumber = getWeekNumber(firstDay);
+        const numberOfWeek = getWeekNumber(firstDay);
         document.getElementById(
             "weekDates"
-        ).textContent = `Uge ${weekNumber}: ${formatDate(firstDay)} - ${formatDate(
+        ).textContent = `Uge ${numberOfWeek}: ${formatDate(firstDay)} - ${formatDate(
             lastDay
         )}`;
-
         return { firstDay, lastDay };
     }
 
@@ -201,10 +212,11 @@ export function initiateAdminCalendar() {
         updateShiftTitle.textContent = isNewShift ? "New Shift" : "Update Shift";
 
         // Set the input values based on the shift data if it exists, otherwise clear the input fields
+        
         if (shift) {
-            updateShiftName.value = shift.name;
-            updateShiftStart.value = shift.start.toISOString().substr(11, 5);
-            updateShiftEnd.value = shift.end.toISOString().substr(11, 5);
+            updateShiftName.value = shift.location;
+            updateShiftStart.value = shift.workStart.substr(11, 5);
+            updateShiftEnd.value = shift.workEnd.substr(11, 5);
             updateShiftIsSick.checked = shift.isSick;
         } else {
             updateShiftName.value = "";
@@ -214,7 +226,7 @@ export function initiateAdminCalendar() {
         }
 
         // Set the worker name
-        updateWorkerName.value = worker.worker;
+        updateWorkerName.value = worker.username;
 
         // Add the updating class to the cell
         cell.classList.add("updating");
@@ -236,17 +248,43 @@ export function initiateAdminCalendar() {
             .getElementById("updateForm")
             .addEventListener("click", removeUpdatingClass);
 
-        deleteButton.onclick = () => {
-            // Remove the shift from worker's data
+
+        //Button for deleting the shift.
+        deleteButton.onclick = async () => {
+
+            // Remove the shift from worker's data (locally)
             const shiftIndex = worker.shifts.indexOf(shift);
+
             if (shiftIndex > -1) {
                 worker.shifts.splice(shiftIndex, 1);
             }
 
-            // Delete shift from the backend
-            // fetch(`${URL}/shifts/${shift.id}`, {
-            //   method: 'DELETE',
-            // });
+            //Fetch to delete the shift by its ID
+            console.log("Trying to delete shift with ID" + shift.id)
+
+
+            try{
+
+            const options = makeOptions("DELETE","",false)
+
+            const deleteResult = await fetch(API_URL + "/shifts/" + shift.id, options).then((response) => 
+                    handleHttpErrors(response)
+                )
+                
+
+                    /*  
+                  //Is the current week.
+                const currentViewedWeek = document.getElementById("weekDates").innerHTML.split(':')[0].split(' ')[1];
+
+                  initiateAdminCalendar(currentViewedWeek);
+
+                  */
+
+            console.log(deleteResult);
+
+            }catch(error){
+                console.log(error)
+            }
 
             // Update the table
             generateCalendar();
@@ -256,47 +294,89 @@ export function initiateAdminCalendar() {
             updateShiftTitle.style.display = "none";
         };
 
-        // Populate the form with the current shift data
-
-        updateForm.onsubmit = (e) => {
+        // Populate the form with the current shift data when trying to update a shift.
+        updateForm.onsubmit = async (e) => {
             e.preventDefault();
 
-
-            // If it's a new shift, create a new shift object and add it to the worker's shifts
-            if (isNewShift) {
-                shift = {
-                    id: Math.random().toString(36).slice(2, 9),
-                    day: day.toISOString(),
-                    start: new Date(day.getFullYear(), day.getMonth(), day.getDate(), 9),
-                    end: new Date(day.getFullYear(), day.getMonth(), day.getDate(), 17),
-                    name: "",
-                    isSick: false,
-                    worker: worker.worker,
-                };
-
-                worker.shifts.push(shift);
-            }
-
-
-            // Update the shift data
-            shift.name = updateShiftName.value;
+            //Extracts the information form the from.
             const shiftStart = updateShiftStart.value;
             const shiftEnd = updateShiftEnd.value;
-            shift.start.setHours(parseInt(shiftStart.substr(0, 2)));
-            shift.start.setMinutes(parseInt(shiftStart.substr(3, 2)));
-            shift.end.setHours(parseInt(shiftEnd.substr(0, 2)));
-            shift.end.setMinutes(parseInt(shiftEnd.substr(3, 2)));
-            shift.isSick = document.getElementById("updateShiftIsSick").checked;
 
-            // Update shift data in the backend
-            // fetch(`${URL}/shifts/${shift.id}`, {
-            //   method: 'PUT',
-            //   headers: {
-            //     'Content-Type': 'application/json'
-            //   },
-            //   body: JSON.stringify(shift)
-            // });
+            //Inserts the times (for example 08:00) into the date objects.
+            const workStart = new Date(day.getFullYear(), day.getMonth(), day.getDate(), parseInt(shiftStart.substr(0, 2)), parseInt(shiftStart.substr(3, 2)));
+            const workEnd = new Date(day.getFullYear(), day.getMonth(), day.getDate(), parseInt(shiftEnd.substr(0, 2)), parseInt(shiftEnd.substr(3, 2)));
 
+
+            console.log(workStart)
+            console.log(workEnd)
+
+            // If it's a new shift, create a new shift object and add it to the worker's shifts.
+
+
+            const body = {
+                workStart: formatDateInput(workStart,shiftStart),
+                workEnd: formatDateInput(workEnd,shiftEnd),
+                location: DOMPurify.sanitize(updateShiftName.value), //Purifies the input, so that it's safe from CrossScript.
+                isSick: document.getElementById("updateShiftIsSick").checked,
+                username: worker.username, // Assuming you need to send the worker's username
+            };
+
+                console.log("Workstart: " + body.workStart)
+                console.log("workEnd: " + body.workEnd)
+                console.log("location: " + body.location)
+                console.log("isSick: " + body.isSick)
+                console.log("username: " + body.username)
+
+            if (isNewShift) {
+
+                console.log("It's a new shift!")
+
+                const addedShift = await addShiftFetch(body);
+            
+                    // Add the new shift to the worker's shifts
+                    /* const newShift = addedShift{
+                        id: addedShift.id,
+                        workStart: body.workStart,
+                        workEnd: body.workEnd,
+                        location: body.location,
+                        isSick: body.isSick,
+                      }; */
+                      // Add the new shift to the worker's shifts
+                      worker.shifts.push(addedShift);
+
+                      console.log("Is shift added?",addedShift);
+
+            } else {
+ 
+                console.log("It's an old shift!")
+
+                const options = makeOptions("PUT",body,false)
+
+                    // Update the existing shift data
+                    shift.location = updateShiftName.value;
+                    shift.workStart = body.workStart;
+                    shift.workEnd = body.workEnd;
+                    shift.isSick = document.getElementById("updateShiftIsSick").checked;
+
+                //Update a shift.
+                try{
+                const response = await fetch(API_URL + "/shifts/" + shift.id, options)
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+    
+                const updatedShift = await response.json();
+                console.log("Shift updated:", updatedShift);
+
+    
+            } catch (error) {
+                console.error("Error updating shift:", error);
+
+                
+            }
+        }
+            
             // Update the table
             generateCalendar();
 
@@ -306,16 +386,23 @@ export function initiateAdminCalendar() {
 
             // Remove the event listener
             updateForm.removeEventListener("click", removeUpdatingClass);
+
+
+
         };
     }
 
     function generateCalendar() {
+
         shiftTable.innerHTML = "";
+
         const headerRow = document.createElement("tr");
 
         // Add an empty cell for the top-left corner
         headerRow.appendChild(document.createElement("th"));
 
+        //console.log("Fetched data in generateCalendar: ",fetchedData)
+       
         // Add days of the week as headers
         daysOfWeek.forEach((day) => {
             const headerCell = document.createElement("th");
@@ -329,31 +416,43 @@ export function initiateAdminCalendar() {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
+        //console.log("Fetched data in generateCalendar AFTER updateWeek: ",fetchedData)
+
         fetchedData.forEach((workerData) => {
             const row = document.createElement("tr");
 
             // Worker name
             const workerCell = document.createElement("td");
-            workerCell.textContent = workerData.worker;
+            workerCell.textContent = workerData.username;
             row.appendChild(workerCell);
 
             // Shifts for each day of the week
             for (let i = 0; i < 7; i++) {
                 const day = new Date(firstDay);
                 day.setDate(firstDay.getDate() + i);
+                //console.log('Worker Data:', workerData.username, 'Shifts:', workerData.shifts,'For the day:', day);
+
                 const cell = document.createElement("td");
 
                 if (isPastDay(day, today)) {
                     cell.classList.add("past-day");
                 }
 
-                const shifts = workerData.shifts.filter(
-                    (s) => new Date(s.day).toISOString() === day.toISOString()
-                );
+                const shifts = workerData.shifts.filter((s) => {
+                    const shiftDate = new Date(s.workStart).setHours(0, 0, 0, 0);
+                    const isEqual = shiftDate === day.valueOf();
+                    //console.log('Shift start:', s.start, 'Shift date:', shiftDate, 'Day:', day.valueOf(), 'Is equal:', isEqual);
+                    return isEqual;
+                });
 
+                //console.log('Filtered shifts:', shifts);
+
+                //For the worker's workday that matches that day, it takes the first occurrence of a shift and puts it into the cell.
                 const shift = shifts[0];
                 if (shifts.length > 0) {
+                    console.log('Rendering shift:', shift);
                     cell.innerHTML = formatShift(shift);
+                
 
                     if (shift.isSick) {
                         cell.classList.add("sick-day");
@@ -366,7 +465,9 @@ export function initiateAdminCalendar() {
 
                         showUpdateForm(workerData, shift, false, cell, day);
                     };
-                } else {
+
+                    } else {
+
                     cell.classList.add("empty-cell");
                     cell.onclick = () => {
                         deselectCell();
@@ -399,6 +500,29 @@ export function initiateAdminCalendar() {
         generateCalendar();
     };
 
-    updateWeekDates();
+
+    updateWeekDates(weekNumber);
     generateCalendar();
+}
+
+
+async function addShiftFetch(shift){
+
+    try{
+
+    const options = makeOptions("POST",shift,false)
+
+    const addedShift = await fetch(API_URL + "/shifts/makeShift", options)
+      .then((response) => {
+        return handleHttpErrors(response);
+      })
+
+      console.log("Added the new shift:",addedShift);
+
+      return addedShift;
+
+        } catch(error) {
+            getElementById("errorMessage").innerHTML = error;
+        }
+
 }

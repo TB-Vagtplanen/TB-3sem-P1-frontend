@@ -71,14 +71,19 @@ export function renderTemplate(templ, contentId) {
    * Use like this--> const responseData = await fetch(URL,{..}).then(handleHttpErrors)
    */
   export async function handleHttpErrors(res) {
+    console.log(res)
     if (!res.ok) {
       const errorResponse = await res.json();
+      console.log("Hello form the HandleHttpErrors:")
+      console.log(errorResponse)
       const error = new Error(errorResponse.message)
       //@ts-ignore
       error.fullError = errorResponse
       throw error
     }
-    return res.json()
+    const result = res.json();
+    console.log("Hello to Json: " + result);
+    return result
   }
   
   
@@ -107,7 +112,7 @@ export function renderTemplate(templ, contentId) {
     }
   
     if(addToken && localStorage.getItem("token")){
-      opts.headers.Authorization = "Bearer " + localStorage.getItem("Token");
+      opts.headers.Authorization = "Bearer " + localStorage.getItem("token");
     }
   
     return opts;
