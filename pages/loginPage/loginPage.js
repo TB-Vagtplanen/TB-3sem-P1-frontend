@@ -45,7 +45,7 @@ async function login(evt) {
   try {
     const response = await fetch(URL, options).then(res=>handleHttpErrors(res))
     localStorage.setItem("user",response.username)
-    localStorage.setItem("Token",response.token)
+    localStorage.setItem("token",response.token)
     localStorage.setItem("roles",response.roles)
 
     document.getElementById("login-id").style.display="none"
