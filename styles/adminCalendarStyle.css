@@ -1,0 +1,46 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  #shiftTable td {
+    width: calc(100% / 8);
+    /* Divide 100% by the number of columns (7 days + 1 worker column) */
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .shift {
+    background-color: rgba(255, 255, 0, 0.1);
+    /* Slight yellow hue */
+    display: inline-block;
+    margin-bottom: 5px;
+    padding: 2px 5px;
+  }
+
+  .sick-day {
+    border: 2px solid red;
+  }
+
+  .past-day {
+    background-color: #f0f0f0;
+  }
+
+  .empty-cell {
+    cursor: pointer;
+  }
+  
+  .updating {
+    border: 3px solid blue;
+  }

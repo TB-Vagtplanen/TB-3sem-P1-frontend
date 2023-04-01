@@ -4,11 +4,12 @@ import {
     setActiveLink, adjustForMissingHash, renderTemplate, loadTemplate
   } from "./utils.js"
   
-  import { initLogin,logout } from "./pages/loginPage/loginPage.js"
+  import { initLogin,logout, checkAdmin } from "./pages/loginPage/loginPage.js"
   import { initAddUser } from "./pages/userAdmin/addUser/addUser.js"
   import { initEditUser } from "./pages/userAdmin/editUser/editUser.js"
   import { initUsers } from "./pages/userAdmin/showUsers/showUsers.js"
-
+  import { loadUserDOM } from "./pages/userCalendarPage/userCalendar.js"
+  import { initiateAdminCalendar } from "./pages/calendarPage/adminCalendar.js"
 
   window.addEventListener("load", async () => {
   
@@ -17,7 +18,9 @@ import {
     const templateEditUser = await loadTemplate("./pages/userAdmin/editUser/editUser.html")
     const templateShowUsers = await loadTemplate("./pages/userAdmin/showUsers/showUsers.html")
 
-    
+    const templateAdminCalendar = await loadTemplate("./pages/calendarPage/adminCalendar.html")
+    const templateUserCalendar = await loadTemplate("./pages/userCalendarPage/userCalendar.html")
+
   
     adjustForMissingHash()
   
@@ -33,21 +36,41 @@ import {
         }
       })
       .on({
+
         "/": () => {
           document.getElementById("error").innerText = ""
           document.getElementById("content").innerHTML = `
           <h2>Home</h2>
+          <img style="width:20%;max-width:600px;margin-top:1em;margin-left: 550px;" src="./images/logo.png">
+          <p style='margin-top:1em;font-size: 1em;color:darkgray;'>
+            Vagtplanen is a software which helps you get a nice view over all your shifts.<span style='font-size:2em;'>&#128516;</span>
+          </p>
           `
         },
-          "/loginPage": () => {
-            document.getElementById("error").innerText = ""
-          renderTemplate(templateLogin, "content")
-          initLogin()
-          
+        "/loginPage": () => {
+          document.getElementById("error").innerText = ""
+        renderTemplate(templateLogin, "content")
+        initLogin()
+        
         },
         "/logout": () => {
           document.getElementById("error").innerText = ""
           logout()
+          renderTemplate(templateLogin, "content")
+        },
+        "/adminCalendar": () => {
+          if (checkAdmin()){
+          renderTemplate(templateAdminCalendar, "content")
+          initiateAdminCalendar();
+          //loadAdminDom()
+        } else{
+          renderTemplate(templateUserCalendar, "content")
+          loadUserDOM()
+        }
+        },
+        "/userCalendar": () => {
+          renderTemplate(templateUserCalendar, "content")
+          loadUserDOM()
         },
         "/userAdmin/showUsers": () => {
           document.getElementById("error").innerText = ""

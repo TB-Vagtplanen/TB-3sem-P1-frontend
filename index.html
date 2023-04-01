@@ -12,13 +12,18 @@
   <link rel="stylesheet" href="styles/styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
   <script src="index.js" type="module"></script>
+  <link rel="stylesheet" href="/styles/calendarStyle.css">
+  <link rel="stylesheet" href="/styles/myStyles.css">
+
+
 </head>
 
 <body style="font-family:Verdana, Geneva, Tahoma, sans-serif">
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size:larger">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#" style="color:lightcoral">Vagtplan</a>
+      <img style="width:5%;max-width:600px;margin-top:1em;" src="./images/logoudenbaggrund.png">
+      <a class="navbar-brand" href="#" style="color:rgb(128, 150, 240)">Vagtplanen</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -42,7 +47,14 @@
           </li>
           <li id="logout-id" class="nav-item" style="display:none">
             <a class="nav-link" href="/logout" data-navigo>Logout</a>
-          </li>    
+          </li>
+
+          <li id="adminCalendar-id" class="nav-item" style="display:none">
+            <a class="nav-link" href="/adminCalendar" data-navigo>Admin calendar</a>
+          </li>
+          <li id="userCalendar-id" class="nav-item" style="display:none">
+            <a class="nav-link" href="/userCalendar" data-navigo>User calendar</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -53,7 +65,10 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    
     </script>
+    
+
 </body>
 
 </html>

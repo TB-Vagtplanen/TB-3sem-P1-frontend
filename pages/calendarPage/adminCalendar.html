@@ -1,0 +1,53 @@
+<template>
+    <link rel="stylesheet" href="../../styles/adminCalendarStyle.css">
+    
+
+    <div
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      <div>
+        <h1>Vagtoversigt</h1>
+        <h2 id="weekDates"></h2>
+      </div>
+      <div>
+        <button id="previousWeek">&larr;</button>
+        <button id="nextWeek">&rarr;</button>
+      </div>
+    </div>
+
+    <h1>Shift Calendar</h1>
+    <table id="shiftTable">
+      <thead>
+        <tr>
+          <th>Worker</th>
+          <th>Monday</th>
+          <th>Tuesday</th>
+          <th>Wednesday</th>
+          <th>Thursday</th>
+          <th>Friday</th>
+          <th>Saturday</th>
+          <th>Sunday</th>
+        </tr>
+      </thead>
+      <tbody id="shiftTableBody"></tbody>
+    </table>
+
+<div id="updateFormContainer"></div>
+    <h2 id="updateShiftTitle" style="display: none">Update Shift</h2>
+    <form id="updateForm" style="display: none">
+      <label for="updateWorkerName">Worker:</label>
+      <input type="text" id="updateWorkerName" readonly /><br /><br />
+      <label for="updateShiftName">Shift Name:</label>
+      <input type="text" id="updateShiftName"  required/><br /><br />
+      <label for="updateShiftStart">Start Time:</label>
+      <input type="time" id="updateShiftStart" required/><br /><br />
+      <label for="updateShiftEnd">End Time:</label>
+      <input type="time" id="updateShiftEnd" required/><br /><br />
+      <label for="updateShiftIsSick">Is sick:</label>
+      <input type="checkbox" id="updateShiftIsSick" /><br /><br />
+      <button type="button" id="deleteShift">Delete Shift</button>
+      <button type="submit">Update Shift</button>
+    </form>
+</div>
+
+</template>
