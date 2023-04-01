@@ -85,7 +85,7 @@ export function loadUserDOM() {
 
   const options = makeOptions("GET", "", true)
   const userFetch = localStorage.getItem("user")
-  const url = "http://localhost:8080/api/users/" + userFetch;
+  const url = "https://tbsem3proj1.azurewebsites.net/api/users/" + userFetch;
 
 
      fetch(url,options)

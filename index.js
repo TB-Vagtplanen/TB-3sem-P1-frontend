@@ -9,6 +9,9 @@ import {
   import { initEditUser } from "./pages/userAdmin/editUser/editUser.js"
   import { initUsers } from "./pages/userAdmin/showUsers/showUsers.js"
   import { loadUserDOM } from "./pages/userCalendarPage/userCalendar.js"
+  import { initLogin,logout, checkAdmin } from "./pages/loginPage/loginPage.js";
+  //import { loadAdminDom } from "./pages/calendarPage/adminCalendar.js"
+  import { loadUserDom as initUserCalendarDOM } from "./pages/userCalendarPage/userCalendar.js"
   import { initiateAdminCalendar } from "./pages/calendarPage/adminCalendar.js"
 
   window.addEventListener("load", async () => {
@@ -65,30 +68,13 @@ import {
           //loadAdminDom()
         } else{
           renderTemplate(templateUserCalendar, "content")
-          loadUserDOM()
+          loadUserDom()
         }
         },
         "/userCalendar": () => {
           renderTemplate(templateUserCalendar, "content")
-          loadUserDOM()
-        },
-        "/userAdmin/showUsers": () => {
-          document.getElementById("error").innerText = ""
-          renderTemplate(templateShowUsers, "content")
-          initUsers()
-        },
-        "/userAdmin/addUser": () => {
-          document.getElementById("error").innerText = ""
-          renderTemplate(templateAddUser, "content")
-          initAddUser()
-        },
-        "/userAdmin/editUser": (match) => {
-          document.getElementById("error").innerText = ""
-          renderTemplate(templateEditUser, "content")
-          initEditUser(match)
-        },
-        
-        
+          loadUserDom()
+        }
       })
       .notFound(() => {
         renderTemplate(templateNotFound, "content")

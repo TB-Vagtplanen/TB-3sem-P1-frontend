@@ -73,12 +73,16 @@ export function renderTemplate(templ, contentId) {
   export async function   handleHttpErrors(res) {
     if (!res.ok) {
       const errorResponse = await res.json();
+      console.log("Hello form the HandleHttpErrors:")
+      console.log(errorResponse)
       const error = new Error(errorResponse.message)
       //@ts-ignore
       error.fullError = errorResponse
       throw error
     }
-    return res.json()
+    const result = res.json();
+    console.log("Hello to Json: " + result);
+    return result
   }
   
   
@@ -106,8 +110,8 @@ export function renderTemplate(templ, contentId) {
       opts.body = JSON.stringify(body);
     }
   
-    if(addToken && localStorage.getItem("Token")){
-      opts.headers.Authorization = "Bearer " + localStorage.getItem("Token");
+    if(addToken && localStorage.getItem("token")){
+      opts.headers.Authorization = "Bearer " + localStorage.getItem("token");
     }
   
     return opts;
