@@ -69,8 +69,12 @@ export function loadUserDOM() {
       const startHour = workStartDate.getHours();
       const endHour = workEndDate.getHours();
 
-      const startWeekday = weekdays[workStartDate.getDay() - 1];
-      const endWeekday = weekdays[workEndDate.getDay() - 1];
+      //const startWeekday = weekdays[workStartDate.getDay() - 1];
+      //const endWeekday = weekdays[workEndDate.getDay() - 1];
+      
+      const startWeekday = weekdays[(workStartDate.getDay() + 6) % 7];
+      const endWeekday = weekdays[(workEndDate.getDay() + 6) % 7];
+
 
       if (startWeekday === endWeekday) {
         addShiftToCalendar(startWeekday, workStartDate.getDate(), startHour, endHour, shift.location, startHourAndMinute, endHourAndMinute);
@@ -107,26 +111,26 @@ export function loadUserDOM() {
         const isSick = shift.isSick;
 
         
-// Initialize the calendar with the fetched shifts data
-const startOfWeek = getStartOfWeek(new Date());
-updateWeekNumber(startOfWeek);
-updateWeekdayDates(shifts, startOfWeek);
-updateCurrentMonth(startOfWeek);
+        // Initialize the calendar with the fetched shifts data
+        const startOfWeek = getStartOfWeek(new Date());
+        updateWeekNumber(startOfWeek);
+        updateWeekdayDates(shifts, startOfWeek);
+        updateCurrentMonth(startOfWeek);
 
-// Update the calendar when the previous or next week buttons are clicked
-document.getElementById("previous-week").addEventListener("click", () => {
-  startOfWeek.setDate(startOfWeek.getDate() - 7);
-  updateWeekNumber(startOfWeek);
-  updateWeekdayDates(shifts, startOfWeek);
-  updateCurrentMonth(startOfWeek);
-});
+        // Update the calendar when the previous or next week buttons are clicked
+        document.getElementById("previous-week").addEventListener("click", () => {
+          startOfWeek.setDate(startOfWeek.getDate() - 7);
+          updateWeekNumber(startOfWeek);
+          updateWeekdayDates(shifts, startOfWeek);
+          updateCurrentMonth(startOfWeek);
+        });
 
-document.getElementById("next-week").addEventListener("click", () => {
-  startOfWeek.setDate(startOfWeek.getDate() + 7);
-  updateWeekNumber(startOfWeek);
-  updateWeekdayDates(shifts, startOfWeek);
-  updateCurrentMonth(startOfWeek);
-});
+        document.getElementById("next-week").addEventListener("click", () => {
+          startOfWeek.setDate(startOfWeek.getDate() + 7);
+          updateWeekNumber(startOfWeek);
+          updateWeekdayDates(shifts, startOfWeek);
+          updateCurrentMonth(startOfWeek);
+        });
 
      })
 
